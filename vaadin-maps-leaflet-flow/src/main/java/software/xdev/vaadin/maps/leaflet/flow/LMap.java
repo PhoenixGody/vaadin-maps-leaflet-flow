@@ -28,7 +28,6 @@ import java.util.List;
 
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.HasSize;
@@ -41,6 +40,8 @@ import com.vaadin.flow.shared.Registration;
 import software.xdev.vaadin.maps.leaflet.flow.data.LCenter;
 import software.xdev.vaadin.maps.leaflet.flow.data.LComponent;
 import software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer;
+import software.xdev.vaadin.maps.leaflet.flow.event.MarkerClickEvent;
+import software.xdev.vaadin.maps.leaflet.flow.event.MoveEndEvent;
 
 
 @NpmPackage(value = "leaflet", version = "^1.6.0")
@@ -236,20 +237,27 @@ public class LMap extends Component implements HasSize, HasStyle
 	{
 		return ComponentUtil.addListener(this, MarkerClickEvent.class, listener);
 	}
-	
-	public class MarkerClickEvent extends ComponentEvent<LMap>
+
+	@ClientCallable
+	protected void onMapMoveEnd(double centerLat, double centerLng,
+								double northEastLat, double northEastLng,
+								double northWestLat, double northWestLng,
+								double southEastLat, double southEastLng,
+								double southWestLat, double southWestLng)
 	{
-		private final String tag;
-		
-		public MarkerClickEvent(final LMap source, final boolean fromClient, final String tag)
-		{
-			super(source, fromClient);
-			this.tag = tag;
-		}
-		
-		public String getTag()
-		{
-			return this.tag;
-		}
+		ComponentUtil.fireEvent(this, new MoveEndEvent(this, true,
+				centerLat, centerLng,
+				northEastLat, northEastLng,
+				northWestLat, northWestLng,
+				southEastLat, southEastLng,
+				southWestLat, southWestLng)
+		);
 	}
+
+	public Registration addMoveEndListener(final ComponentEventListener<MoveEndEvent> listener)
+	{
+		return ComponentUtil.addListener(this, MoveEndEvent.class, listener);
+	}
+
+
 }

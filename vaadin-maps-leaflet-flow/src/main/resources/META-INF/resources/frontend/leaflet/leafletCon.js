@@ -79,6 +79,21 @@ export class LeafletMap extends PolymerElement {
             }
         ).addTo(this.map);
 
+        var vaadinServer = this.$server;
+        this.map.on('moveend', function (e) {
+            var center = e.target.getCenter();
+            var bounds = e.target.getBounds();
+            var northEast = bounds.getNorthEast();
+            var northWest = bounds.getNorthWest();
+            var southEast = bounds.getSouthEast();
+            var southWest = bounds.getSouthWest();
+            vaadinServer.onMapMoveEnd(center.lat, center.lng,
+                                      northEast.lat, northEast.lng,
+                                      northWest.lat, northWest.lng,
+                                      southEast.lat, southEast.lng,
+                                      southWest.lat, southWest.lng);
+        });
+
         this.items = new Array();
     }
 
