@@ -58,7 +58,9 @@ export class LeafletMap extends PolymerElement {
     }
     
     setTileLayer(layer)
-    {     
+    {
+        if (this.tile)
+            this.map.removeLayer(this.tile);
         this.tile = L.tileLayer(layer.tile.link,{attribution: layer.tile.attribution, maxZoom: layer.tile.zoom, id: layer.tile.id}).addTo(this.map);
         this.tile.bringToFront();
     }
