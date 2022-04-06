@@ -168,7 +168,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	 *
 	 * @param items
 	 * 
-	 * @deprecated Use {@link LMap#removeComponents(LComponent...)}
+	 * @deprecated Use {@link LMap#removeLComponents(LComponent...)}
 	 */
 	@Deprecated
 	public void removeItem(final LComponent... items)
