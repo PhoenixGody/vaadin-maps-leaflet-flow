@@ -2,6 +2,7 @@ package software.xdev.vaadin.maps.leaflet.flow.demo;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
@@ -12,14 +13,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 import software.xdev.vaadin.maps.leaflet.flow.LMap;
-import software.xdev.vaadin.maps.leaflet.flow.data.LCenter;
-import software.xdev.vaadin.maps.leaflet.flow.data.LCircle;
-import software.xdev.vaadin.maps.leaflet.flow.data.LComponent;
-import software.xdev.vaadin.maps.leaflet.flow.data.LDivIcon;
-import software.xdev.vaadin.maps.leaflet.flow.data.LIcon;
-import software.xdev.vaadin.maps.leaflet.flow.data.LMarker;
-import software.xdev.vaadin.maps.leaflet.flow.data.LPoint;
-import software.xdev.vaadin.maps.leaflet.flow.data.LPolygon;
+import software.xdev.vaadin.maps.leaflet.flow.data.*;
 
 
 @Route("")
@@ -150,14 +144,21 @@ public class LeafletView extends VerticalLayout
 		this.markerLeberkaese.setPopup("Fast food like Leberkäsesemmeln");
 		
 		this.map = new LMap(49.675126, 12.160733, 17);
-		
+
+		LTileLayer osmLayer = new LTileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+				"© <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>", 18,
+				UUID.randomUUID().toString());
+		this.map.setTileLayer(osmLayer);
+
 		this.map.setHeight("700px");
 		this.map.setWidth("1000px");
 		this.map.addMarkerClickListener(ev ->
 		{
 			System.out.println(ev.getTag());
 		}); // add some logic here for called Markers (token)
-		
+
+		map.addMoveEndListener(event -> System.out.println("moved!:"  + event.getBoundaries()));
+
 		this.map.addLComponents(
 			markerXDev,
 			markerInfo,

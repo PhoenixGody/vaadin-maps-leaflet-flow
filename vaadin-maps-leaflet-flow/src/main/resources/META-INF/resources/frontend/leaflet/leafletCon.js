@@ -74,13 +74,6 @@ export class LeafletMap extends PolymerElement {
         super.ready();
         this.map = new L.map(this.$.divMap);
 
-        this.tile = L.tileLayer(
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-                maxZoom: 18
-            }
-        ).addTo(this.map);
-
         var vaadinServer = this.$server;
         this.map.on('moveend', function (e) {
             var center = e.target.getCenter();

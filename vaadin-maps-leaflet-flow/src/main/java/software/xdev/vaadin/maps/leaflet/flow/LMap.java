@@ -37,6 +37,7 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.shared.Registration;
 
+import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.data.LCenter;
 import software.xdev.vaadin.maps.leaflet.flow.data.LComponent;
 import software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer;
@@ -57,12 +58,32 @@ public class LMap extends Component implements HasSize, HasStyle
 	
 	private LCenter center;
 	private final List<LComponent> components = new ArrayList<>();
-	
+
+	/**
+	 * @deprecated Use {@link LMap#LMap(double, double, int, software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer)}
+	 * 	because this will not automagically add a OpenStreetMap tile layer
+	 */
+	@Deprecated
 	public LMap(final double lat, final double lon, final int zoom)
+	{
+		this(lat, lon, zoom, LTileLayer.osmTileLayer());
+	}
+
+	/**
+	 *
+	 * @param lat latitude start position for the center
+	 * @param lon longitude start position for the center
+	 * @param zoom start zoom level
+	 * @param tileLayer tile layer that is added directly to the map. If null is given no layer is added
+	 */
+	public LMap(final double lat, final double lon, final int zoom, @Nullable LTileLayer tileLayer)
 	{
 		this.center = new LCenter(lat, lon, zoom);
 		this.setViewPoint(this.center);
 		this.setFixZIndexEnabled(true);
+
+		if (tileLayer != null)
+			setTileLayer(tileLayer);
 	}
 	
 	/**

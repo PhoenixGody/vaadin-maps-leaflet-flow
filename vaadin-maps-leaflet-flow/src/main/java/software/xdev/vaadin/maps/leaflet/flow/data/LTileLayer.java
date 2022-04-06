@@ -26,6 +26,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 
+import java.util.UUID;
+
 
 public class LTileLayer
 {
@@ -97,5 +99,16 @@ public class LTileLayer
 		}
 		
 		return jsonObject;
+	}
+
+	/**
+	 * Generates an openStreetMap Tile Layer.
+	 * Use this with caution and please respect the official usage policies.
+	 */
+	public static LTileLayer osmTileLayer()
+	{
+		return new LTileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+				"© <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>", 18,
+				UUID.randomUUID().toString());
 	}
 }
