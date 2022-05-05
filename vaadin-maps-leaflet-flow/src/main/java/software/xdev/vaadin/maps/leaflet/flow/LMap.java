@@ -175,8 +175,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	{
 		this.removeLComponents(items);
 	}
-	
-	
+
 	/**
 	 * remove Leaflet component(s) to the map
 	 *
@@ -246,14 +245,7 @@ public class LMap extends Component implements HasSize, HasStyle
 		this.center = start;
 		this.setViewPoint(start);
 	}
-	
-	
-	@ClientCallable
-	protected void onMarkerClick(final String tag)
-	{
-		ComponentUtil.fireEvent(this, new MarkerClickEvent(this, true, tag));
-	}
-	
+
 	public Registration addMarkerClickListener(final ComponentEventListener<MarkerClickEvent> listener)
 	{
 		return ComponentUtil.addListener(this, MarkerClickEvent.class, listener);

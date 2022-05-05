@@ -21,17 +21,45 @@ package software.xdev.vaadin.maps.leaflet.flow.event;
  */
 
 import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.DomEvent;
+import com.vaadin.flow.component.EventData;
+import elemental.json.JsonValue;
 import software.xdev.vaadin.maps.leaflet.flow.LMap;
+import software.xdev.vaadin.maps.leaflet.flow.data.HasMapElementId;
+import software.xdev.vaadin.maps.leaflet.flow.data.LLatLng;
+import software.xdev.vaadin.maps.leaflet.flow.data.convert.JsonLeafletConverter;
 
-public class MarkerClickEvent extends ComponentEvent<LMap> {
-    private final String tag;
+@DomEvent("map-leaflet-marker-clicked")
+public class MarkerClickEvent extends ComponentEvent<LMap> implements HasMapElementId {
+    private String mapElementId;
+    private LLatLng position;
 
-    public MarkerClickEvent(final LMap source, final boolean fromClient, final String tag) {
+    public MarkerClickEvent(final LMap source, final boolean fromClient,
+                            @EventData("event.detail.mapElementId") String pMapElementId,
+                            @EventData("event.detail.position") JsonValue pPosition) {
         super(source, fromClient);
-        this.tag = tag;
+        setMapElementId(pMapElementId);
+        position = JsonLeafletConverter.jsonValue2LLatLng(pPosition);
     }
 
+    /**
+     * @deprecated use getMapElementId instead
+     */
+    @Deprecated
     public String getTag() {
-        return this.tag;
+        return mapElementId;
+    }
+
+    public String getMapElementId() {
+        return mapElementId;
+    }
+
+    @Override
+    public void setMapElementId(String pMapElementId) {
+        mapElementId = pMapElementId;
+    }
+
+    public LLatLng getPosition() {
+        return position;
     }
 }

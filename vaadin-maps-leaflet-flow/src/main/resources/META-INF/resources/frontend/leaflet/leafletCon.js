@@ -93,7 +93,7 @@ export class LeafletMap extends PolymerElement {
     }
 
     addMarker(obj) {
-      
+      let leafletMapElement = this;
         var leafIcon;
         if (obj.properties.icon.type == 'DivIcon') {
             leafIcon = new L.divIcon(obj.properties.icon);
@@ -105,14 +105,17 @@ export class LeafletMap extends PolymerElement {
         if (obj.properties.popup != null) {
             item.bindPopup(obj.properties.popup);
         }
-		
-        if (obj.tag != "empty") {
-        	var vaadinServer = this.$server;  
-			
-            item.on('click', function (e) {
-                vaadinServer.onMarkerClick(obj.tag);
+
+        item.on('click', function (event) {
+            let position = obj.geometry.coordinates;
+            const customEvent = new CustomEvent('map-leaflet-marker-clicked', {
+                detail: {
+                    mapElementId: obj.mapElementId,
+                    position: position
+                }
             });
-        }
+            leafletMapElement.dispatchEvent(customEvent);
+        });
 
         this.items.push(item);
     }

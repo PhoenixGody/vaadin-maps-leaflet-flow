@@ -28,16 +28,15 @@ import elemental.json.Json;
 import elemental.json.JsonObject;
 
 
-public class LMarker implements LComponent
+public class LMarker implements LComponent, HasMapElementId
 {
-
 	private static final String MARKER_TYPE = "Point";
 	private LMarkerGeometry geometry;
 	private LMarkerOptions properties;
 	/**
 	 * Tag for custom meta-data
 	 */
-	private String tag;
+	private String mapElementId;
 
 
 	/**
@@ -55,7 +54,7 @@ public class LMarker implements LComponent
 	{
 		this.geometry = new LMarkerGeometry(MARKER_TYPE, lat, lon);
 		this.properties = new LMarkerOptions();
-		this.tag = tag;
+		this.mapElementId = tag;
 	}
 
 
@@ -138,12 +137,16 @@ public class LMarker implements LComponent
 
 	public String getTag()
 	{
-		return this.tag;
+		return this.mapElementId;
 	}
 
-	public void setTag(final String tag)
+	/**
+	 * @deprecated use
+	 */
+	@Deprecated
+	public void setTag(final String mapElementId)
 	{
-		this.tag = tag;
+		this.mapElementId = mapElementId;
 	}
 
 	@Override
@@ -156,7 +159,7 @@ public class LMarker implements LComponent
 			jsonObject.put("type", Json.create("Feature"));
 			jsonObject.put("geometry", Json.parse(mapper.writeValueAsString(this.geometry)));
 			jsonObject.put("properties", Json.parse(mapper.writeValueAsString(this.properties)));
-			jsonObject.put("tag", Json.create(this.tag));
+			jsonObject.put("tag", Json.create(this.mapElementId));
 
 		}
 		catch(final JsonProcessingException e)
@@ -171,5 +174,15 @@ public class LMarker implements LComponent
 	public String getJsFunctionForAddingToMap()
 	{
 		return "addMarker";
+	}
+
+	@Override
+	public void setMapElementId(String pMapElementId) {
+		mapElementId = pMapElementId;
+	}
+
+	@Override
+	public String getMapElementId() {
+		return mapElementId;
 	}
 }

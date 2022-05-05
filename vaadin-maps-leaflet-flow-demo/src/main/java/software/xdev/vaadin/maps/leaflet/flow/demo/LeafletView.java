@@ -154,7 +154,7 @@ public class LeafletView extends VerticalLayout
 		this.map.setWidth("1000px");
 		this.map.addMarkerClickListener(ev ->
 		{
-			System.out.println(ev.getTag());
+			System.out.println(ev.getMapElementId());
 		}); // add some logic here for called Markers (token)
 
 		map.addMoveEndListener(event -> System.out.println("moved!:"  + event.getBoundaries()));
