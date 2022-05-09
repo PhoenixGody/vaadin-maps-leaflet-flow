@@ -1,13 +1,13 @@
 import {html,PolymerElement} from "@polymer/polymer/polymer-element.js";
-import "leaflet/dist/leaflet.js"; // for distribution
-//import * as L from "leaflet/src/Leaflet.js"; // for debugging
+//import "leaflet/dist/leaflet.js"; // for distribution
+import * as L from "leaflet/src/Leaflet.js"; // for debugging
 
 export class LeafletMap extends PolymerElement {
     static get template() {
         return html `
       <link
         rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+        href=[[leafletCssSrc]]
       />
 
       <style>
@@ -35,6 +35,9 @@ export class LeafletMap extends PolymerElement {
 
     static get properties() {
         return {
+            leafletCssSrc: {
+                type: String
+            },
             map: {
                 type: Object,
                 notify: true
@@ -73,6 +76,8 @@ export class LeafletMap extends PolymerElement {
 
     _initMap() {
         super.ready();
+        const vers = L.version;
+        this.leafletCssSrc =  "https://unpkg.com/leaflet@" + vers + "/dist/leaflet.css";
         this.map = new L.map(this.$.divMap);
 
         var vaadinServer = this.$server;
