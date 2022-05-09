@@ -34,7 +34,7 @@ public class LIcon
 	private String iconUrl;
 	
 	@JsonInclude(Include.NON_NULL)
-	private final List<Integer> iconSize = new ArrayList<>();
+	private List<Integer> iconSize;
 	private final List<Integer> iconAnchor = new ArrayList<>();
 	private final List<Integer> popupAnchor = new ArrayList<>();
 	private String shadowUrl;
@@ -47,8 +47,8 @@ public class LIcon
 		this.setPopupAnchor(1, -34);
 		this.setShadowSize(41, 41);
 		this.setShadowAnchor(12, 41);
-		this.iconUrl = "https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png";
-		this.shadowUrl = "https://unpkg.com/leaflet@1.6.0/dist/images/marker-shadow.png";
+		this.iconUrl = "https://unpkg.com/leaflet@1.8.0/dist/images/marker-icon.png";
+		this.shadowUrl = "https://unpkg.com/leaflet@1.8.0/dist/images/marker-shadow.png";
 		this.type = "Icon";
 		
 	}
@@ -102,7 +102,11 @@ public class LIcon
 	 */
 	public void setIconSize(final int x, final int y)
 	{
-		this.iconSize.clear();
+		if (this.iconSize == null)
+			this.iconSize = new ArrayList<>();
+		else
+			this.iconSize.clear();
+
 		this.iconSize.add(x);
 		this.iconSize.add(y);
 	}

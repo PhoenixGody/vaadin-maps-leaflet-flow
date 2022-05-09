@@ -1,12 +1,13 @@
 import {html,PolymerElement} from "@polymer/polymer/polymer-element.js";
-import "leaflet/dist/leaflet.js";
+import "leaflet/dist/leaflet.js"; // for distribution
+//import * as L from "leaflet/src/Leaflet.js"; // for debugging
 
 export class LeafletMap extends PolymerElement {
     static get template() {
         return html `
       <link
         rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
       />
 
       <style>

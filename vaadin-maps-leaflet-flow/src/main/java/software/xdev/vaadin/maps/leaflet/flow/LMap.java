@@ -45,9 +45,9 @@ import software.xdev.vaadin.maps.leaflet.flow.event.MarkerClickEvent;
 import software.xdev.vaadin.maps.leaflet.flow.event.MoveEndEvent;
 
 
-@NpmPackage(value = "leaflet", version = "^1.6.0")
-@Tag("leaflet-map")
+@NpmPackage(value = "leaflet", version = "^1.8.0")
 @JsModule("./leaflet/leafletCon.js")
+@Tag("leaflet-map")
 public class LMap extends Component implements HasSize, HasStyle
 {
 	private static final String SET_VIEW_POINT_FUNCTION = "setViewPoint";
