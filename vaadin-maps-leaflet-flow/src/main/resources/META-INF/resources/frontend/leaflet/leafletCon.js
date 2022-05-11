@@ -78,21 +78,26 @@ export class LeafletMap extends PolymerElement {
     }
 
     _initMap() {
+        const leafletMapElement = this;
         this.map = new L.map(this.$.divMap);
-
-        var vaadinServer = this.$server;
         this.map.on('moveend', function (e) {
-            var center = e.target.getCenter();
-            var bounds = e.target.getBounds();
-            var northEast = bounds.getNorthEast();
-            var northWest = bounds.getNorthWest();
-            var southEast = bounds.getSouthEast();
-            var southWest = bounds.getSouthWest();
-            vaadinServer.onMapMoveEnd(center.lat, center.lng,
-                                      northEast.lat, northEast.lng,
-                                      northWest.lat, northWest.lng,
-                                      southEast.lat, southEast.lng,
-                                      southWest.lat, southWest.lng);
+            let center = e.target.getCenter();
+            let bounds = e.target.getBounds();
+            let northEast = bounds.getNorthEast();
+            let northWest = bounds.getNorthWest();
+            let southEast = bounds.getSouthEast();
+            let southWest = bounds.getSouthWest();
+
+            const customEvent = new CustomEvent('map-leaflet-viewport-move-end', {
+                detail: {
+                    center: center,
+                    northEast: northEast,
+                    northWest: northWest,
+                    southEast: southEast,
+                    southWest: southWest
+                }
+            });
+            leafletMapElement.dispatchEvent(customEvent);
         });
 
         // mapping of Leaflet items (like features, tile layers, etc.) to IDs for the flow connection
@@ -100,7 +105,7 @@ export class LeafletMap extends PolymerElement {
     }
 
     addMarker(itemId, obj) {
-      let leafletMapElement = this;
+      const leafletMapElement = this;
         var leafIcon;
         if (obj.properties.icon.type == 'DivIcon') {
             leafIcon = new L.divIcon(obj.properties.icon);
@@ -115,11 +120,10 @@ export class LeafletMap extends PolymerElement {
         }
 
         item.on('click', function (event) {
-            let position = obj.geometry.coordinates;
             const customEvent = new CustomEvent('map-leaflet-marker-clicked', {
                 detail: {
                     mapItemId: itemId,
-                    position: position
+                    position: event.latlng
                 }
             });
             leafletMapElement.dispatchEvent(customEvent);

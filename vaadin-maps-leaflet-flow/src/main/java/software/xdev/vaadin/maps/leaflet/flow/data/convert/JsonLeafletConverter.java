@@ -1,6 +1,7 @@
 package software.xdev.vaadin.maps.leaflet.flow.data.convert;
 
 import elemental.json.JsonArray;
+import elemental.json.JsonObject;
 import elemental.json.JsonValue;
 import software.xdev.vaadin.maps.leaflet.flow.data.LLatLng;
 
@@ -12,13 +13,13 @@ public class JsonLeafletConverter {
         //no instance
     }
 
-    public static LLatLng jsonValue2LLatLng(JsonValue pPosition)
+    public static LLatLng jsonValue2LLatLng(JsonValue position)
     {
-        assert pPosition instanceof JsonArray;//todo
-        JsonArray arrayPosition = (JsonArray) pPosition;
+        assert position instanceof JsonObject;//todo
+        JsonObject latLng = (JsonObject) position;
 
-        double lat = arrayPosition.getNumber(0);
-        double lng = arrayPosition.getNumber(1);
+        double lat = latLng.getNumber("lat");
+        double lng = latLng.getNumber("lng");
         return new LLatLng(lat, lng);
     }
 }

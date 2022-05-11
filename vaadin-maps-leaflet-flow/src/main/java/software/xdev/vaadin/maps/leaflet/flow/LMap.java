@@ -245,22 +245,6 @@ public class LMap extends Component implements HasSize, HasStyle
 		return ComponentUtil.addListener(this, MarkerClickEvent.class, listener);
 	}
 
-	@ClientCallable
-	protected void onMapMoveEnd(double centerLat, double centerLng,
-								double northEastLat, double northEastLng,
-								double northWestLat, double northWestLng,
-								double southEastLat, double southEastLng,
-								double southWestLat, double southWestLng)
-	{
-		ComponentUtil.fireEvent(this, new MoveEndEvent(this, true,
-				centerLat, centerLng,
-				northEastLat, northEastLng,
-				northWestLat, northWestLng,
-				southEastLat, southEastLng,
-				southWestLat, southWestLng)
-		);
-	}
-
 	public Registration addMoveEndListener(final ComponentEventListener<MoveEndEvent> listener)
 	{
 		return ComponentUtil.addListener(this, MoveEndEvent.class, listener);
