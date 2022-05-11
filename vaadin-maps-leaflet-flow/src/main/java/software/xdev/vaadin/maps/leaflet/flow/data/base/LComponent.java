@@ -1,6 +1,4 @@
-package software.xdev.vaadin.maps.leaflet.flow.data;
-
-import elemental.json.JsonObject;
+package software.xdev.vaadin.maps.leaflet.flow.data.base;
 
 /*-
  * #%L
@@ -28,17 +26,10 @@ import elemental.json.JsonObject;
  * Marker Interface for Leaflet Components
  *
  */
-public interface LComponent
-{
+public interface LComponent extends CanConvertToJson, HasMapItemId {
 	/**
 	 * Get the JavaScript Function for adding the component to a map
 	 * @return
 	 */
 	String getJsFunctionForAddingToMap();
-	
-	/**
-	 * The json data for e.g. adding the component to a map
-	 * @return
-	 */
-	JsonObject toJson();
 }

@@ -54,6 +54,9 @@ export class LeafletMap extends PolymerElement {
     }
 
     ready() {
+        super.ready();
+        const vers = L.version;
+        this.leafletCssSrc =  "https://unpkg.com/leaflet@" + vers + "/dist/leaflet.css";
         this._initMap();
     }
 
@@ -75,9 +78,6 @@ export class LeafletMap extends PolymerElement {
     }
 
     _initMap() {
-        super.ready();
-        const vers = L.version;
-        this.leafletCssSrc =  "https://unpkg.com/leaflet@" + vers + "/dist/leaflet.css";
         this.map = new L.map(this.$.divMap);
 
         var vaadinServer = this.$server;
@@ -95,10 +95,11 @@ export class LeafletMap extends PolymerElement {
                                       southWest.lat, southWest.lng);
         });
 
-        this.items = new Array();
+        // mapping of Leaflet items (like features, tile layers, etc.) to IDs for the flow connection
+        this.items = new Map();
     }
 
-    addMarker(obj) {
+    addMarker(itemId, obj) {
       let leafletMapElement = this;
         var leafIcon;
         if (obj.properties.icon.type == 'DivIcon') {
@@ -107,6 +108,7 @@ export class LeafletMap extends PolymerElement {
             leafIcon = new L.Icon(obj.properties.icon);
         }    
         var item = L.marker(obj.geometry.coordinates, {icon: leafIcon}).addTo(this.map);
+        this.items.set(itemId, item);
        
         if (obj.properties.popup != null) {
             item.bindPopup(obj.properties.popup);
@@ -116,41 +118,50 @@ export class LeafletMap extends PolymerElement {
             let position = obj.geometry.coordinates;
             const customEvent = new CustomEvent('map-leaflet-marker-clicked', {
                 detail: {
-                    mapElementId: obj.mapElementId,
+                    mapItemId: itemId,
                     position: position
                 }
             });
             leafletMapElement.dispatchEvent(customEvent);
         });
 
-        this.items.push(item);
+
     }
 
-    deleteItem(index) {
-        var delItem = this.items[index];
-        delItem.remove();
-        this.items.splice(index, 1);
+    deleteItem(itemId) {
+        let itemToDelete = this.items.get(itemId);
+        itemToDelete.remove();
+        this.items.delete(itemId);
     }
 
-    addPolygon(obj) {
-        var item = L.polygon(obj.geometry.coordinates, obj.properties).addTo(
-            this.map
-        );
+    addPolygon(itemId, obj) {
+        var item = L.polygon(obj.geometry.coordinates, obj.properties).addTo(this.map);
 
         if (obj.properties.popup != null) {
             item.bindPopup(obj.properties.popup);
         }
 
-        this.items.push(item);
+        this.items.set(itemId, item);
     }
 
-    addCircle(obj) {
+    addCircle(itemId, obj) {
         var item = L.circle(obj.geometry.coords, obj.properties).addTo(this.map);
         if (obj.properties.popup != null) {
             item.bindPopup(obj.properties.popup);
         }
 
-        this.items.push(item);
+        this.items.set(itemId, item);
+    }
+
+    addControlLayers(itemId, params) {
+        if (!this.tile)
+            throw new Error("no tile was set yet");//todo
+        let baseLayers = {};
+        baseLayers["lay"] = this.tile;
+        let layersControlItem = L.control.layers(baseLayers, null, params.options);
+        layersControlItem.addTo(this.map);
+
+        this.items.set(itemId, layersControlItem);
     }
 }
 

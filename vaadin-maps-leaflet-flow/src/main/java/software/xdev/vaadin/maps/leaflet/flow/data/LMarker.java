@@ -26,9 +26,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
 
 
-public class LMarker implements LComponent, HasMapElementId
+public class LMarker extends LManagedComponent
 {
 	private static final String MARKER_TYPE = "Point";
 	private LMarkerGeometry geometry;
@@ -36,7 +37,6 @@ public class LMarker implements LComponent, HasMapElementId
 	/**
 	 * Tag for custom meta-data
 	 */
-	private String mapElementId;
 
 
 	/**
@@ -47,14 +47,9 @@ public class LMarker implements LComponent, HasMapElementId
 	 */
 	public LMarker(final double lat, final double lon)
 	{
-		this(lat, lon, "empty");
-	}
-
-	public LMarker(final double lat, final double lon, final String tag)
-	{
+		super();
 		this.geometry = new LMarkerGeometry(MARKER_TYPE, lat, lon);
 		this.properties = new LMarkerOptions();
-		this.mapElementId = tag;
 	}
 
 
@@ -135,20 +130,6 @@ public class LMarker implements LComponent, HasMapElementId
 		this.properties.setPopup(popup);
 	}
 
-	public String getTag()
-	{
-		return this.mapElementId;
-	}
-
-	/**
-	 * @deprecated use
-	 */
-	@Deprecated
-	public void setTag(final String mapElementId)
-	{
-		this.mapElementId = mapElementId;
-	}
-
 	@Override
 	public JsonObject toJson()
 	{
@@ -159,8 +140,6 @@ public class LMarker implements LComponent, HasMapElementId
 			jsonObject.put("type", Json.create("Feature"));
 			jsonObject.put("geometry", Json.parse(mapper.writeValueAsString(this.geometry)));
 			jsonObject.put("properties", Json.parse(mapper.writeValueAsString(this.properties)));
-			jsonObject.put("tag", Json.create(this.mapElementId));
-
 		}
 		catch(final JsonProcessingException e)
 		{
@@ -174,15 +153,5 @@ public class LMarker implements LComponent, HasMapElementId
 	public String getJsFunctionForAddingToMap()
 	{
 		return "addMarker";
-	}
-
-	@Override
-	public void setMapElementId(String pMapElementId) {
-		mapElementId = pMapElementId;
-	}
-
-	@Override
-	public String getMapElementId() {
-		return mapElementId;
 	}
 }

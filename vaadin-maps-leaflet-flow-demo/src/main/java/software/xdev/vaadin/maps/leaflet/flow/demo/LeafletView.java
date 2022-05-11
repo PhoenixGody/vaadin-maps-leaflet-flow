@@ -14,6 +14,7 @@ import com.vaadin.flow.router.Route;
 
 import software.xdev.vaadin.maps.leaflet.flow.LMap;
 import software.xdev.vaadin.maps.leaflet.flow.data.*;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
 
 
 @Route("")
@@ -62,8 +63,8 @@ public class LeafletView extends VerticalLayout
 	{
 		this.viewLunch = !this.viewLunch;
 		
-		final List<LComponent> normalComponents = Arrays.asList(this.markerRathaus, this.markerZob);
-		final List<LComponent> lunchComponents = Arrays.asList(
+		final List<LManagedComponent> normalComponents = Arrays.asList(this.markerRathaus, this.markerZob);
+		final List<LManagedComponent> lunchComponents = Arrays.asList(
 			this.circleRange,
 			this.markerPizza,
 			this.markerKebab,
@@ -81,7 +82,7 @@ public class LeafletView extends VerticalLayout
 	
 	private void initMapComponents()
 	{
-		this.markerZob = new LMarker(49.673470, 12.160108, "ZoB");
+		this.markerZob = new LMarker(49.673470, 12.160108);
 		this.markerZob.setPopup("Central bus station");
 		
 		final LMarker markerXDev = new LMarker(49.675806677512824, 12.160990185846394);
@@ -120,7 +121,7 @@ public class LeafletView extends VerticalLayout
 		polygonNoc.setStroke(false);
 		polygonNoc.setPopup("NOC-Nordoberpfalz Center");
 		
-		this.markerRathaus = new LMarker(49.675519, 12.163868, "L-22556");
+		this.markerRathaus = new LMarker(49.675519, 12.163868);
 		this.markerRathaus.setPopup("Old Town Hall");
 		
 		this.circleRange = new LCircle(49.675126, 12.160733, 450);
@@ -150,11 +151,13 @@ public class LeafletView extends VerticalLayout
 				UUID.randomUUID().toString());
 		this.map.setTileLayer(osmLayer);
 
+		this.map.addLComponents(new LControlLayers(new LControlLayersOptions(null, null, false, null)));
+
 		this.map.setHeight("700px");
 		this.map.setWidth("1000px");
 		this.map.addMarkerClickListener(ev ->
 		{
-			System.out.println(ev.getMapElementId());
+			System.out.println(ev.getMapItemId());
 		}); // add some logic here for called Markers (token)
 
 		map.addMoveEndListener(event -> System.out.println("moved!:"  + event.getBoundaries()));

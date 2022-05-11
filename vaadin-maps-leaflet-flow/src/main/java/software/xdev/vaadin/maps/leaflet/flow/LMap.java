@@ -21,10 +21,8 @@ package software.xdev.vaadin.maps.leaflet.flow;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Component;
@@ -39,8 +37,8 @@ import com.vaadin.flow.shared.Registration;
 
 import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.data.LCenter;
-import software.xdev.vaadin.maps.leaflet.flow.data.LComponent;
 import software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
 import software.xdev.vaadin.maps.leaflet.flow.event.MarkerClickEvent;
 import software.xdev.vaadin.maps.leaflet.flow.event.MoveEndEvent;
 
@@ -57,7 +55,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	private static final String SET_ZOOM_FUNCTION = "setZoomLevel";
 	
 	private LCenter center;
-	private final List<LComponent> components = new ArrayList<>();
+	private final Map<String, LManagedComponent> components = new TreeMap<>();
 
 	/**
 	 * @deprecated Use {@link LMap#LMap(double, double, int, software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer)}
@@ -126,10 +124,10 @@ public class LMap extends Component implements HasSize, HasStyle
 	 *
 	 * @param lObjects
 	 * 
-	 * @deprecated Use {@link LMap#addLComponents(LComponent...)} instead
+	 * @deprecated Use {@link LMap#addLComponents(LManagedComponent...)} instead
 	 */
 	@Deprecated
-	public void addLComponent(final LComponent... lObjects)
+	public void addLComponent(final LManagedComponent... lObjects)
 	{
 		this.addLComponents(lObjects);
 	}
@@ -139,7 +137,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	 *
 	 * @param lComponents
 	 */
-	public void addLComponents(final LComponent... lComponents)
+	public void addLComponents(final LManagedComponent... lComponents)
 	{
 		this.addLComponents(Arrays.asList(lComponents));
 	}
@@ -149,18 +147,18 @@ public class LMap extends Component implements HasSize, HasStyle
 	 *
 	 * @param lComponents
 	 */
-	public void addLComponents(final Collection<LComponent> lComponents)
+	public void addLComponents(final Collection<LManagedComponent> lComponents)
 	{
-		for(final LComponent lComponent : lComponents)
+		for(final LManagedComponent lComponent : lComponents)
 		{
 			this.addLComponent(lComponent);
 		}
 	}
 	
-	protected void addLComponent(final LComponent lComponent)
+	protected void addLComponent(final LManagedComponent lComponent)
 	{
-		this.getComponents().add(lComponent);
-		this.getElement().callJsFunction(lComponent.getJsFunctionForAddingToMap(), lComponent.toJson());
+		this.getComponents().put(lComponent.getMapItemId(), lComponent);
+		this.getElement().callJsFunction(lComponent.getJsFunctionForAddingToMap(), lComponent.getMapItemId(), lComponent.toJson());
 	}
 	
 	/**
@@ -168,10 +166,10 @@ public class LMap extends Component implements HasSize, HasStyle
 	 *
 	 * @param items
 	 * 
-	 * @deprecated Use {@link LMap#removeLComponents(LComponent...)}
+	 * @deprecated Use {@link LMap#removeLComponents(LManagedComponent...)}
 	 */
 	@Deprecated
-	public void removeItem(final LComponent... items)
+	public void removeItem(final LManagedComponent... items)
 	{
 		this.removeLComponents(items);
 	}
@@ -181,7 +179,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	 *
 	 * @param lComponents
 	 */
-	public void removeLComponents(final LComponent... lComponents)
+	public void removeLComponents(final LManagedComponent... lComponents)
 	{
 		this.removeLComponents(Arrays.asList(lComponents));
 	}
@@ -191,41 +189,37 @@ public class LMap extends Component implements HasSize, HasStyle
 	 *
 	 * @param lComponents
 	 */
-	public void removeLComponents(final Collection<LComponent> lComponents)
+	public void removeLComponents(final Collection<LManagedComponent> lComponents)
 	{
-		for(final LComponent lComponent : lComponents)
+		for(final LManagedComponent lComponent : lComponents)
 		{
 			this.removeLComponent(lComponent);
 		}
 	}
 	
-	protected void removeLComponent(final LComponent lComponent)
+	protected void removeLComponent(final LManagedComponent lComponent)
 	{
-		final int index = this.components.indexOf(lComponent);
-		
-		if(index != -1 && this.components.remove(lComponent))
-		{
-			this.getElement().callJsFunction(DELETE_FUNCTION, index);
-		}
+		getComponents().remove(lComponent.getMapItemId());
+		this.getElement().callJsFunction(DELETE_FUNCTION, lComponent.getMapItemId());
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return
-	 * 
+	 *
 	 * @deprecated Use {@link LMap#getComponents()}
 	 */
 	@Deprecated
-	public List<LComponent> getItems()
+	public Map<String, LManagedComponent> getItems()
 	{
 		return this.components;
 	}
-	
+
 	/**
 	 * Returns a new component list
 	 * @return
 	 */
-	public List<LComponent> getComponents()
+	public Map<String, LManagedComponent> getComponents()
 	{
 		return this.components;
 	}
@@ -271,6 +265,4 @@ public class LMap extends Component implements HasSize, HasStyle
 	{
 		return ComponentUtil.addListener(this, MoveEndEvent.class, listener);
 	}
-
-
 }

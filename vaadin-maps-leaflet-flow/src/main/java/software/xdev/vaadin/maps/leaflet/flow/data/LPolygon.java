@@ -29,15 +29,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
 
 
-public class LPolygon implements LComponent
+public class LPolygon extends LManagedComponent
 {
 	private final LPolygonGeometry geometry;
 	private final LPolygonOptions properties;
 	
 	public LPolygon(final LPoint... points)
 	{
+		super();
 		final List<List<Double>> posis = new ArrayList<>();
 		this.properties = new LPolygonOptions();
 		for(final LPoint p : points)

@@ -26,11 +26,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.LComponent;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
 
 
-public class LCircle implements LComponent
+public class LCircle extends LManagedComponent
 {
-	
 	private LPoint geometry;
 	private LPolygonOptions properties;
 	
@@ -42,6 +43,7 @@ public class LCircle implements LComponent
 	 */
 	public LCircle(final double lat, final double lon, final double radius)
 	{
+		super();
 		this.geometry = new LPoint(lat, lon);
 		this.properties = new LPolygonOptions();
 		this.properties.setRadius(radius);
