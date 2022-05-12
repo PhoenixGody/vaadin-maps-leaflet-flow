@@ -1,4 +1,4 @@
-package software.xdev.vaadin.maps.leaflet.flow.data;
+package software.xdev.vaadin.maps.leaflet.flow.data.control;
 
 
 import elemental.json.Json;
@@ -13,6 +13,13 @@ import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
 public class LControlLayersOptions implements CanConvertToJson {
     private Boolean collapsed;
     private Boolean autoZIndex;
+
+    /**
+     * To prevent misunderstanding of this property in leaflet: this will hide only the element to choose the base-layer.
+     * It will not hide the complete Control.layers-element.
+     * If you've got only one BaseLayer and have nothing else and do not want to see the Control it's best to
+     * not add the control-element.
+     */
     private Boolean hideSingleBase;
     private Boolean sortLayers;
     public LControlLayersOptions(@Nullable Boolean collapsed, @Nullable Boolean autoZIndex, @Nullable Boolean hideSingleBase, @Nullable Boolean sortLayers) {

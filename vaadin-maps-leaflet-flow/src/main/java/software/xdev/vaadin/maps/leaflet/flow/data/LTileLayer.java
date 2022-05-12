@@ -25,17 +25,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.HasMapItemId;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
 
 import java.util.UUID;
 
 
-public class LTileLayer
+public class LTileLayer extends LManagedComponent
 {
 	private String link;
 	private String attribution;
 	private int zoom;
 	private String id;
-	
+
 	public LTileLayer(final String link, final String attribution, final int zoom, final String id)
 	{
 		super();
@@ -85,6 +88,7 @@ public class LTileLayer
 		this.id = id;
 	}
 	
+	@Override
 	public JsonObject toJson()
 	{
 		final JsonObject jsonObject = Json.createObject();
@@ -110,5 +114,15 @@ public class LTileLayer
 		return new LTileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 				"© <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>", 18,
 				UUID.randomUUID().toString());
+	}
+
+	@Override
+	public String getJsFunctionForAddingToMap() {
+		return "addTileLayer";
+	}
+
+	@Override
+	public String getJsFunctionForRemovingFromMap() {
+		return "removeTileLayer";
 	}
 }

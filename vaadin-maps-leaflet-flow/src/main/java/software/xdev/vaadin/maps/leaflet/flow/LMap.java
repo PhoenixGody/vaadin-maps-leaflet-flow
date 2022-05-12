@@ -50,7 +50,6 @@ public class LMap extends Component implements HasSize, HasStyle
 {
 	private static final String SET_VIEW_POINT_FUNCTION = "setViewPoint";
 		
-	private static final String DELETE_FUNCTION = "deleteItem";
 	private static final String TILE_LAYER_FUNCTION = "setTileLayer";
 	private static final String SET_ZOOM_FUNCTION = "setZoomLevel";
 	
@@ -103,9 +102,11 @@ public class LMap extends Component implements HasSize, HasStyle
 		this.getElement().callJsFunction(SET_VIEW_POINT_FUNCTION, viewpoint.toJson());
 	}
 	
-	public void setTileLayer(final LTileLayer tl)
+	public void setTileLayer(final LTileLayer tileLayer)
 	{
-		this.getElement().callJsFunction(TILE_LAYER_FUNCTION, tl.toJson());
+		if (!getComponents().containsKey(tileLayer.getMapItemId()))
+			addLComponents(tileLayer);
+		this.getElement().callJsFunction(TILE_LAYER_FUNCTION, tileLayer.getMapItemId());
 	}
 	
 	/**
@@ -157,6 +158,8 @@ public class LMap extends Component implements HasSize, HasStyle
 	
 	protected void addLComponent(final LManagedComponent lComponent)
 	{
+		if (lComponent.getJsFunctionForAddingToMap() == null)
+			throw new IllegalArgumentException("invalid lcomponent");//todo: should never happen because the getJsFunctionForAddingToMap should never return null -> implement in all childs
 		this.getComponents().put(lComponent.getMapItemId(), lComponent);
 		this.getElement().callJsFunction(lComponent.getJsFunctionForAddingToMap(), lComponent.getMapItemId(), lComponent.toJson());
 	}
@@ -200,7 +203,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	protected void removeLComponent(final LManagedComponent lComponent)
 	{
 		getComponents().remove(lComponent.getMapItemId());
-		this.getElement().callJsFunction(DELETE_FUNCTION, lComponent.getMapItemId());
+		this.getElement().callJsFunction(lComponent.getJsFunctionForRemovingFromMap(), lComponent.getMapItemId());
 	}
 
 	/**

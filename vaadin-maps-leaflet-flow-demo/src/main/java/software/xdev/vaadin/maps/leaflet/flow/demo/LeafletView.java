@@ -9,12 +9,16 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 import software.xdev.vaadin.maps.leaflet.flow.LMap;
 import software.xdev.vaadin.maps.leaflet.flow.data.*;
 import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
+import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayers;
+import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayersBaseConfig;
+import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayersOptions;
 
 
 @Route("")
@@ -37,7 +41,10 @@ public class LeafletView extends VerticalLayout
 		
 		icoClose.addClickListener(iev -> dialog.close());
 	});
-	
+
+	private final Button btnSetLayer = new Button("Set Layer to OMS (German)", this::setOSMGermanyLayer);
+	private final Button btnRemoveLayer = new Button("Remove Layer OMS (German)", this::removeOSMGermanyLayer);
+
 	private LMap map;
 	
 	private LMarker markerZob;
@@ -50,13 +57,16 @@ public class LeafletView extends VerticalLayout
 	private LMarker markerGreek;
 	private LMarker markerBakery;
 	private LMarker markerLeberkaese;
-	
+	private LTileLayer osmLayer;
+	private LTileLayer osmLayerDE;
+
 	public LeafletView()
 	{
 		this.initMapComponents();
 		
 		this.btnLunch.addClickListener(this::btnLunchClick);
 		this.add(this.btnLunch, this.btnOpenDialog);
+		this.add(new HorizontalLayout(this.btnSetLayer, this.btnRemoveLayer));
 	}
 	
 	private void btnLunchClick(final ClickEvent<Button> event)
@@ -146,12 +156,21 @@ public class LeafletView extends VerticalLayout
 		
 		this.map = new LMap(49.675126, 12.160733, 17);
 
-		LTileLayer osmLayer = new LTileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+		osmLayer = LTileLayer.osmTileLayer();
+		osmLayerDE = new LTileLayer("https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png",
 				"© <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>", 18,
 				UUID.randomUUID().toString());
+		this.map.addLComponents(osmLayer);
+		this.map.addLComponents(osmLayerDE);
+
+		LControlLayersBaseConfig baseConfig = new LControlLayersBaseConfig();
+		baseConfig.addTileLayer("OSM", osmLayer);
+		baseConfig.addTileLayer("OSM (German)", osmLayerDE);
+		LControlLayers lControlLayers = new LControlLayers(new LControlLayersOptions(null, null, true, null), baseConfig);
+		this.map.addLComponents(lControlLayers);
+		//this.map.setTileLayer(osmLayerDE);
 		this.map.setTileLayer(osmLayer);
 
-		this.map.addLComponents(new LControlLayers(new LControlLayersOptions(null, null, false, null)));
 
 		this.map.setHeight("700px");
 		this.map.setWidth("1000px");
@@ -170,5 +189,13 @@ public class LeafletView extends VerticalLayout
 			this.markerRathaus);
 		
 		this.add(this.map);
+	}
+
+	private void setOSMGermanyLayer(ClickEvent<Button> event) {
+		this.map.setTileLayer(osmLayerDE);
+	}
+
+	private void removeOSMGermanyLayer(ClickEvent<Button> event) {
+		this.map.removeLComponents(osmLayerDE);
 	}
 }

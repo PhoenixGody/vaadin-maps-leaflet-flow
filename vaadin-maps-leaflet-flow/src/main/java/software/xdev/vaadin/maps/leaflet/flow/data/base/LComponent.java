@@ -27,9 +27,17 @@ package software.xdev.vaadin.maps.leaflet.flow.data.base;
  *
  */
 public interface LComponent extends CanConvertToJson, HasMapItemId {
+	static final String DELETE_FUNCTION = "deleteItem";
+
 	/**
 	 * Get the JavaScript Function for adding the component to a map
 	 * @return
 	 */
 	String getJsFunctionForAddingToMap();
+
+
+	default String getJsFunctionForRemovingFromMap()
+	{
+		return DELETE_FUNCTION;
+	}
 }
