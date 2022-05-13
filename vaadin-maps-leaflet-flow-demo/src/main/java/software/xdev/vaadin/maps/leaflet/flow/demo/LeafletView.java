@@ -15,10 +15,12 @@ import com.vaadin.flow.router.Route;
 
 import software.xdev.vaadin.maps.leaflet.flow.LMap;
 import software.xdev.vaadin.maps.leaflet.flow.data.*;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
+import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
 import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayers;
 import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayersBaseConfig;
 import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayersOptions;
+import software.xdev.vaadin.maps.leaflet.flow.data.tooltip.LTooltip;
+import software.xdev.vaadin.maps.leaflet.flow.data.tooltip.LTooltipOptions;
 
 
 @Route("")
@@ -59,6 +61,7 @@ public class LeafletView extends VerticalLayout
 	private LMarker markerLeberkaese;
 	private LTileLayer osmLayer;
 	private LTileLayer osmLayerDE;
+	private LTooltip markerRathausTooltip;
 
 	public LeafletView()
 	{
@@ -67,6 +70,7 @@ public class LeafletView extends VerticalLayout
 		this.btnLunch.addClickListener(this::btnLunchClick);
 		this.add(this.btnLunch, this.btnOpenDialog);
 		this.add(new HorizontalLayout(this.btnSetLayer, this.btnRemoveLayer));
+		this.add(new Button("open Townhall Tooltip", e -> this.markerRathaus.toggleTooltip()));
 	}
 	
 	private void btnLunchClick(final ClickEvent<Button> event)
@@ -133,7 +137,7 @@ public class LeafletView extends VerticalLayout
 		
 		this.markerRathaus = new LMarker(49.675519, 12.163868);
 		this.markerRathaus.setPopup("Old Town Hall");
-		
+
 		this.circleRange = new LCircle(49.675126, 12.160733, 450);
 		
 		this.markerPizza = new LMarker(49.674413, 12.160925);
@@ -153,14 +157,16 @@ public class LeafletView extends VerticalLayout
 		
 		this.markerLeberkaese = new LMarker(49.673800, 12.160113);
 		this.markerLeberkaese.setPopup("Fast food like Leberkäsesemmeln");
-		
-		this.map = new LMap(49.675126, 12.160733, 17);
+
 
 		osmLayer = LTileLayer.osmTileLayer();
 		osmLayerDE = new LTileLayer("https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png",
 				"© <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>", 18,
 				UUID.randomUUID().toString());
-		this.map.addLComponents(osmLayer);
+		this.map = new LMap(49.675126, 12.160733, 17, this.osmLayer);
+
+
+
 		this.map.addLComponents(osmLayerDE);
 
 		LControlLayersBaseConfig baseConfig = new LControlLayersBaseConfig();
@@ -168,7 +174,6 @@ public class LeafletView extends VerticalLayout
 		baseConfig.addTileLayer("OSM (German)", osmLayerDE);
 		LControlLayers lControlLayers = new LControlLayers(new LControlLayersOptions(null, null, true, null), baseConfig);
 		this.map.addLComponents(lControlLayers);
-		//this.map.setTileLayer(osmLayerDE);
 		this.map.setTileLayer(osmLayer);
 
 
@@ -187,7 +192,9 @@ public class LeafletView extends VerticalLayout
 			this.markerZob,
 			polygonNoc,
 			this.markerRathaus);
-		
+
+		this.markerRathaus.bindTooltip(new LTooltip("This is a tooltip", this.markerRathaus, new LTooltipOptions(null, null, true, null, null)));
+
 		this.add(this.map);
 	}
 

@@ -2,8 +2,9 @@ package software.xdev.vaadin.maps.leaflet.flow.data.control;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
+import elemental.json.JsonValue;
 import org.jetbrains.annotations.NotNull;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
+import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
 
 public class LControlLayers extends LManagedComponent {
     private final LControlLayersOptions options;
@@ -16,7 +17,7 @@ public class LControlLayers extends LManagedComponent {
     }
 
     @Override
-    public JsonObject toJson() {
+    public JsonValue toJson() {
         final JsonObject result = Json.createObject();
         result.put("options", options.toJson());
         result.put("baseConfig", baseConfig.toJson());

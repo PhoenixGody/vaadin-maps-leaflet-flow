@@ -20,14 +20,10 @@ package software.xdev.vaadin.maps.leaflet.flow.data;
  * #L%
  */
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import elemental.json.Json;
 import elemental.json.JsonObject;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.HasMapItemId;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
+import elemental.json.JsonValue;
+import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
 
 import java.util.UUID;
 
@@ -89,20 +85,18 @@ public class LTileLayer extends LManagedComponent
 	}
 	
 	@Override
-	public JsonObject toJson()
+	public JsonValue toJson()
 	{
-		final JsonObject jsonObject = Json.createObject();
-		final ObjectMapper mapper = new ObjectMapper();
-		try
-		{
-			jsonObject.put("tile", Json.parse(mapper.writeValueAsString(this)));
-		}
-		catch(final JsonProcessingException e)
-		{
-			throw new RuntimeException(e);
-		}
-		
-		return jsonObject;
+		final JsonObject result = Json.createObject();
+
+		final JsonObject tileLayer = Json.createObject();
+		tileLayer.put("link", getLink());
+		tileLayer.put("attribution", getAttribution());
+		tileLayer.put("zoom", getZoom());
+		tileLayer.put("id", getId());
+
+		result.put("tile", tileLayer);
+		return result;
 	}
 
 	/**

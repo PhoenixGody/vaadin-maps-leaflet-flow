@@ -3,6 +3,7 @@ package software.xdev.vaadin.maps.leaflet.flow.data.control;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
+import elemental.json.JsonValue;
 import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
 
@@ -66,7 +67,7 @@ public class LControlLayersOptions implements CanConvertToJson {
     }
 
     @Override
-    public JsonObject toJson() {
+    public JsonValue toJson() {
         final JsonObject result = Json.createObject();
         if (getCollapsed() != null)
             result.put("collapsed", getCollapsed());

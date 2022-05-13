@@ -21,11 +21,17 @@ package software.xdev.vaadin.maps.leaflet.flow.data;
  * #L%
  */
 
+import elemental.json.Json;
+import elemental.json.JsonArray;
+import elemental.json.JsonValue;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
+
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class LPoint
+public class LPoint implements CanConvertToJson
 {
 	private List<Double> coords = new ArrayList<>();
 	
@@ -44,5 +50,16 @@ public class LPoint
 	{
 		this.coords = point;
 	}
-	
+
+	@Override
+	@Nullable
+	public JsonValue toJson() {
+		if (getCoords().size() != 2)
+			return null;
+
+		JsonArray result = Json.createArray();
+		result.set(0, getCoords().get(0));
+		result.set(1, getCoords().get(1));
+		return result;
+	}
 }

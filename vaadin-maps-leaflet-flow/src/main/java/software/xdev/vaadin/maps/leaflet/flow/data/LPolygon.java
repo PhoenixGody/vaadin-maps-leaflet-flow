@@ -29,10 +29,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
+import elemental.json.JsonValue;
+import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
 
 
-public class LPolygon extends LManagedComponent
+public class LPolygon extends LLayer
 {
 	private final LPolygonGeometry geometry;
 	private final LPolygonOptions properties;
@@ -288,7 +289,7 @@ public class LPolygon extends LManagedComponent
 	}
 	
 	@Override
-	public JsonObject toJson()
+	public JsonValue toJson()
 	{
 		final JsonObject jsonObject = Json.createObject();
 		final ObjectMapper mapper = new ObjectMapper();

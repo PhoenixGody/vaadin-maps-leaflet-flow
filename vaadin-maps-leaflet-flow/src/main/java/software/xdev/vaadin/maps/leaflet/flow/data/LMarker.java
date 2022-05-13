@@ -26,10 +26,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
+import elemental.json.JsonValue;
 
 
-public class LMarker extends LManagedComponent
+public class LMarker extends LLayer
 {
 	private static final String MARKER_TYPE = "Point";
 	private LMarkerGeometry geometry;
@@ -131,7 +131,7 @@ public class LMarker extends LManagedComponent
 	}
 
 	@Override
-	public JsonObject toJson()
+	public JsonValue toJson()
 	{
 		final JsonObject jsonObject = Json.createObject();
 		final ObjectMapper mapper = new ObjectMapper();

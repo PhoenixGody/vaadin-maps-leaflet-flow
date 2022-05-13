@@ -1,15 +1,13 @@
 package software.xdev.vaadin.maps.leaflet.flow.data.control;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import elemental.json.Json;
 import elemental.json.JsonObject;
+import elemental.json.JsonValue;
 import org.jetbrains.annotations.NotNull;
 import software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer;
 import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LControlLayersBaseConfig implements CanConvertToJson {
@@ -21,7 +19,7 @@ public class LControlLayersBaseConfig implements CanConvertToJson {
     }
 
     @Override
-    public JsonObject toJson() {
+    public JsonValue toJson() {
         final JsonObject result = Json.createObject();
         tileLayers.forEach((displayName, tileLayer) -> {
             result.put(displayName, tileLayer.getMapItemId());

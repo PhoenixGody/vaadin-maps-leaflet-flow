@@ -26,11 +26,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.LComponent;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
+import elemental.json.JsonValue;
+import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
 
 
-public class LCircle extends LManagedComponent
+public class LCircle extends LLayer
 {
 	private LPoint geometry;
 	private LPolygonOptions properties;
@@ -305,7 +305,7 @@ public class LCircle extends LManagedComponent
 	}
 	
 	@Override
-	public JsonObject toJson()
+	public JsonValue toJson()
 	{
 		final JsonObject jsonObject = Json.createObject();
 		final ObjectMapper mapper = new ObjectMapper();

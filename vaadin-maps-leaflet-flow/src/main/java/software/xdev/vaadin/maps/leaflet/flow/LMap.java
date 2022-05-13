@@ -22,9 +22,7 @@ package software.xdev.vaadin.maps.leaflet.flow;
  */
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
@@ -38,7 +36,6 @@ import com.vaadin.flow.shared.Registration;
 import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.data.LCenter;
 import software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.LManagedComponent;
 import software.xdev.vaadin.maps.leaflet.flow.event.MarkerClickEvent;
 import software.xdev.vaadin.maps.leaflet.flow.event.MoveEndEvent;
 
@@ -48,8 +45,10 @@ import software.xdev.vaadin.maps.leaflet.flow.event.MoveEndEvent;
 @Tag("leaflet-map")
 public class LMap extends Component implements HasSize, HasStyle
 {
+	private static final String GET_ITEM_FUNCTION = "getItem";
+	public static final String GET_ITEM_FUNCTION_CALL = "this." + LMap.GET_ITEM_FUNCTION + "($0)";
 	private static final String SET_VIEW_POINT_FUNCTION = "setViewPoint";
-		
+
 	private static final String TILE_LAYER_FUNCTION = "setTileLayer";
 	private static final String SET_ZOOM_FUNCTION = "setZoomLevel";
 	
@@ -77,7 +76,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	{
 		this.center = new LCenter(lat, lon, zoom);
 		this.setViewPoint(this.center);
-		this.setFixZIndexEnabled(true);
+		this.setFixZIndexEnabled(!true);
 
 		if (tileLayer != null)
 			setTileLayer(tileLayer);
@@ -159,7 +158,12 @@ public class LMap extends Component implements HasSize, HasStyle
 	protected void addLComponent(final LManagedComponent lComponent)
 	{
 		if (lComponent.getJsFunctionForAddingToMap() == null)
-			throw new IllegalArgumentException("invalid lcomponent");//todo: should never happen because the getJsFunctionForAddingToMap should never return null -> implement in all childs
+			throw new IllegalArgumentException("invalid lcomponent");
+
+		if (lComponent.isAttachedToMap())
+			throw new IllegalStateException("The given lcomponent has already been added in a LMap");
+
+		lComponent.setAttachedMap(this);
 		this.getComponents().put(lComponent.getMapItemId(), lComponent);
 		this.getElement().callJsFunction(lComponent.getJsFunctionForAddingToMap(), lComponent.getMapItemId(), lComponent.toJson());
 	}
@@ -203,6 +207,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	protected void removeLComponent(final LManagedComponent lComponent)
 	{
 		getComponents().remove(lComponent.getMapItemId());
+		lComponent.setAttachedMap(null);
 		this.getElement().callJsFunction(lComponent.getJsFunctionForRemovingFromMap(), lComponent.getMapItemId());
 	}
 

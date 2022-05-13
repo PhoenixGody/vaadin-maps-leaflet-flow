@@ -211,6 +211,31 @@ export class LeafletMap extends PolymerElement {
         item.off('remove', this.onTileLayerRemoved, this);
         this.tiles.delete(itemId);
     }
+
+    bindTooltip(layerItemId, params) {
+        let layer = this.items.get(layerItemId);
+        if (!layer)
+            throw new Error("Tooltip could not be added: the itemId of the target layer was not found. " +
+                "Maybe the Layer is not yet added?");
+
+        layer.bindTooltip(params.tooltipContent, params.tooltipOptions);
+    }
+
+    unbindTooltip(layerItemId) {
+        let layer = this.items.get(layerItemId);
+        if (!layer)
+            throw new Error("Tooltip could not be added: the itemId of the target layer was not found. " +
+                "Maybe the Layer is not yet added?");
+
+        layer.unbindTooltip();
+    }
+
+    getItem(itemId) {
+        let result = this.items.get(itemId);
+        if (!result)
+            throw new Error(`requested item with id: "${itemId}" could not be found.`);
+        return result;
+    }
 }
 
 customElements.define("leaflet-map", LeafletMap);
