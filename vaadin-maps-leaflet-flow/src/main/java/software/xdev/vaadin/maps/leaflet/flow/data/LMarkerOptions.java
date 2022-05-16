@@ -39,12 +39,20 @@ public class LMarkerOptions
 	{
 		this.icon = icon;
 	}
-	
+
+	/**
+	 * @deprecated Use LPopup instead
+	 */
+	@Deprecated
 	public String getPopup()
 	{
 		return this.popup;
 	}
-	
+
+	/**
+	 * @deprecated Use bindPopup instead
+	 */
+	@Deprecated
 	public void setPopup(final String popup)
 	{
 		this.popup = popup;

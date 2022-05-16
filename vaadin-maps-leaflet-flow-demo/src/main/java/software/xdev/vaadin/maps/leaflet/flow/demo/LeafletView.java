@@ -19,6 +19,8 @@ import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
 import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayers;
 import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayersBaseConfig;
 import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayersOptions;
+import software.xdev.vaadin.maps.leaflet.flow.data.popup.LPopup;
+import software.xdev.vaadin.maps.leaflet.flow.data.popup.LPopupOptions;
 import software.xdev.vaadin.maps.leaflet.flow.data.tooltip.LTooltip;
 import software.xdev.vaadin.maps.leaflet.flow.data.tooltip.LTooltipOptions;
 
@@ -194,6 +196,10 @@ public class LeafletView extends VerticalLayout
 			this.markerRathaus);
 
 		this.markerRathaus.bindTooltip(new LTooltip("This is a tooltip", this.markerRathaus, new LTooltipOptions(null, null, true, null, null)));
+		LPopupOptions rathausPopupOptions = new LPopupOptions();
+		rathausPopupOptions.setCloseButton(false);
+		rathausPopupOptions.setOffset(new LPoint(20, 40));
+		this.markerRathaus.bindPopup(new LPopup("This is a popup!", this.markerRathaus, rathausPopupOptions));
 
 		this.add(this.map);
 	}

@@ -230,6 +230,25 @@ export class LeafletMap extends PolymerElement {
         layer.unbindTooltip();
     }
 
+
+    bindPopup(layerItemId, params) {
+        let layer = this.items.get(layerItemId);
+        if (!layer)
+            throw new Error("Tooltip could not be added: the itemId of the target layer was not found. " +
+                "Maybe the Layer is not yet added?");
+
+        layer.bindPopup(params.popupContent, params.popupOptions);
+    }
+
+    unbindPopup(layerItemId) {
+        let layer = this.items.get(layerItemId);
+        if (!layer)
+            throw new Error("Tooltip could not be added: the itemId of the target layer was not found. " +
+                "Maybe the Layer is not yet added?");
+
+        layer.unbindPopup();
+    }
+
     getItem(itemId) {
         let result = this.items.get(itemId);
         if (!result)
