@@ -107,6 +107,35 @@ export class LeafletMap extends PolymerElement {
             leafletMapElement.dispatchEvent(customEvent);
         });
 
+        this.map.on('locationfound', function (e) {
+            const customEvent = new CustomEvent('map-leaflet-locationfound', {
+                detail: {
+                    latlng: e.latlng,
+                    accuracy: e.accuracy,
+                    altitude: e.altitude,
+                    altitudeAccuracy: e.altitudeAccuracy,
+                    heading: e.heading,
+                    speed: e.speed,
+                    timestamp: e.timestamp,
+                    northEast: e.bounds.getNorthEast(),
+                    northWest: e.bounds.getNorthWest(),
+                    southEast: e.bounds.getSouthEast(),
+                    southWest: e.bounds.getSouthWest()
+                }
+            });
+            leafletMapElement.dispatchEvent(customEvent);
+        });
+
+        this.map.on('locationerror', function (e) {
+            const customEvent = new CustomEvent('map-leaflet-locationerror', {
+                detail: {
+                    message: e.message,
+                    code: e.code
+                }
+            });
+            leafletMapElement.dispatchEvent(customEvent);
+        });
+
         // mapping of Leaflet items (like features, etc.) to IDs for the flow connection
         this.items = new Map();//todo cleanup on disconnect or call from server?
         // mapping of Leaflet TileLayer items to IDs for the flow connection
@@ -254,6 +283,14 @@ export class LeafletMap extends PolymerElement {
         if (!result)
             throw new Error(`requested item with id: "${itemId}" could not be found.`);
         return result;
+    }
+
+    startLocate(options) {
+        this.map.locate(options);
+    }
+
+    stopLocate() {
+        this.map.stopLocate();
     }
 }
 

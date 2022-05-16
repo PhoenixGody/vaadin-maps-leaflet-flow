@@ -33,9 +33,13 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.shared.Registration;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.data.LCenter;
+import software.xdev.vaadin.maps.leaflet.flow.data.LLocateOptions;
 import software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer;
+import software.xdev.vaadin.maps.leaflet.flow.event.LocationErrorEvent;
+import software.xdev.vaadin.maps.leaflet.flow.event.LocationEvent;
 import software.xdev.vaadin.maps.leaflet.flow.event.MarkerClickEvent;
 import software.xdev.vaadin.maps.leaflet.flow.event.MoveEndEvent;
 
@@ -51,7 +55,10 @@ public class LMap extends Component implements HasSize, HasStyle
 
 	private static final String TILE_LAYER_FUNCTION = "setTileLayer";
 	private static final String SET_ZOOM_FUNCTION = "setZoomLevel";
-	
+
+	private static final String START_LOCATE_FUNCTION = "startLocate";
+	private static final String STOP_LOCATE_FUNCTION = "stopLocate";
+
 	private LCenter center;
 	private final Map<String, LManagedComponent> components = new TreeMap<>();
 
@@ -256,5 +263,24 @@ public class LMap extends Component implements HasSize, HasStyle
 	public Registration addMoveEndListener(final ComponentEventListener<MoveEndEvent> listener)
 	{
 		return ComponentUtil.addListener(this, MoveEndEvent.class, listener);
+	}
+
+	public void startLocate(@NotNull LLocateOptions locateOptions) {
+		this.getElement().callJsFunction(START_LOCATE_FUNCTION, locateOptions.toJson());
+	}
+
+	public void stopLocate() {
+		this.getElement().callJsFunction(STOP_LOCATE_FUNCTION);
+	}
+
+	public Registration addOnLocateSuccessListener(final ComponentEventListener<LocationEvent> listener)
+	{
+		return ComponentUtil.addListener(this, LocationEvent.class, listener);
+	}
+
+
+	public Registration addOnLocateFailListener(final ComponentEventListener<LocationErrorEvent> listener)
+	{
+		return ComponentUtil.addListener(this, LocationErrorEvent.class, listener);
 	}
 }

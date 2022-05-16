@@ -9,6 +9,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -49,6 +50,9 @@ public class LeafletView extends VerticalLayout
 	private final Button btnSetLayer = new Button("Set Layer to OMS (German)", this::setOSMGermanyLayer);
 	private final Button btnRemoveLayer = new Button("Remove Layer OMS (German)", this::removeOSMGermanyLayer);
 
+	private final Button btnStartLocation = new Button("Start locating", this::startLocation);
+	private final Button btnStopLocation = new Button("Stop locating", this::stopLocation);
+
 	private LMap map;
 	
 	private LMarker markerZob;
@@ -72,6 +76,7 @@ public class LeafletView extends VerticalLayout
 		this.btnLunch.addClickListener(this::btnLunchClick);
 		this.add(this.btnLunch, this.btnOpenDialog);
 		this.add(new HorizontalLayout(this.btnSetLayer, this.btnRemoveLayer));
+		this.add(new HorizontalLayout(this.btnStartLocation, this.btnStopLocation));
 		this.add(new Button("open Townhall Tooltip", e -> this.markerRathaus.toggleTooltip()));
 	}
 	
@@ -167,6 +172,14 @@ public class LeafletView extends VerticalLayout
 				UUID.randomUUID().toString());
 		this.map = new LMap(49.675126, 12.160733, 17, this.osmLayer);
 
+		this.map.addOnLocateSuccessListener((event) -> {
+			Notification.show("Located successfully!");
+		});
+		this.map.addOnLocateFailListener((event) -> {
+			Notification.show("Could not locate you!");
+			this.map.stopLocate();
+		});
+
 
 
 		this.map.addLComponents(osmLayerDE);
@@ -210,5 +223,14 @@ public class LeafletView extends VerticalLayout
 
 	private void removeOSMGermanyLayer(ClickEvent<Button> event) {
 		this.map.removeLComponents(osmLayerDE);
+	}
+
+
+	private void startLocation(ClickEvent<Button> buttonClickEvent) {
+		this.map.startLocate(new LLocateOptions(true, false, null, null, null, true));
+	}
+
+	private void stopLocation(ClickEvent<Button> buttonClickEvent) {
+		this.map.stopLocate();
 	}
 }
