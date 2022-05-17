@@ -88,7 +88,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	{
 		this.center = new LCenter(lat, lon, zoom);
 		this.setViewPoint(this.center);
-		this.setFixZIndexEnabled(!true);
+		this.setFixZIndexEnabled(true);
 
 		if (tileLayer != null)
 			setTileLayer(tileLayer);
