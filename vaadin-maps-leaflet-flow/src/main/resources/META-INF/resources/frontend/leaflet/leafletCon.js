@@ -154,7 +154,8 @@ export class LeafletMap extends PolymerElement {
         }    
         var item = L.marker(obj.geometry.coordinates, {icon: leafIcon}).addTo(this.map);
         this.items.set(itemId, item);
-       
+
+        // only for deprecated calls; there exists a bindPopup function that is better suited
         if (obj.properties.popup != null) {
             item.bindPopup(obj.properties.popup);
         }
@@ -181,6 +182,7 @@ export class LeafletMap extends PolymerElement {
     addPolygon(itemId, obj) {
         var item = L.polygon(obj.geometry.coordinates, obj.properties).addTo(this.map);
 
+        // only for deprecated calls; there exists a bindPopup function that is better suited
         if (obj.properties.popup != null) {
             item.bindPopup(obj.properties.popup);
         }
@@ -190,6 +192,8 @@ export class LeafletMap extends PolymerElement {
 
     addCircle(itemId, obj) {
         var item = L.circle(obj.geometry.coords, obj.properties).addTo(this.map);
+
+        // only for deprecated calls; there exists a bindPopup function that is better suited
         if (obj.properties.popup != null) {
             item.bindPopup(obj.properties.popup);
         }
