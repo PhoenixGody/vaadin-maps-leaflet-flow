@@ -150,7 +150,7 @@ export class LeafletMap extends PolymerElement {
         if (obj.properties.icon.type == 'DivIcon') {
             leafIcon = new L.divIcon(obj.properties.icon);
         } else {
-            leafIcon = new L.Icon(obj.properties.icon);
+            leafIcon = new L.icon(obj.properties.icon);
         }    
         var item = L.marker(obj.geometry.coordinates, {icon: leafIcon}).addTo(this.map);
         this.items.set(itemId, item);
