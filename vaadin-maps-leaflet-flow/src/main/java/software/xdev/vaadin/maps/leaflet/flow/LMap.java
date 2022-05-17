@@ -44,11 +44,16 @@ import software.xdev.vaadin.maps.leaflet.flow.event.MarkerClickEvent;
 import software.xdev.vaadin.maps.leaflet.flow.event.MoveEndEvent;
 
 
-@NpmPackage(value = "leaflet", version = "^1.8.0")
+
+@NpmPackage(value = "leaflet", version = "^" + LMap.LEAFLET_VERSION)
 @JsModule("./leaflet/leafletCon.js")
 @Tag("leaflet-map")
 public class LMap extends Component implements HasSize, HasStyle
 {
+	// the common used version of leaflet
+	public static final String LEAFLET_VERSION = "1.8.0";
+
+
 	private static final String GET_ITEM_FUNCTION = "getItem";
 	public static final String GET_ITEM_FUNCTION_CALL = "this." + LMap.GET_ITEM_FUNCTION + "($0)";
 	private static final String SET_VIEW_POINT_FUNCTION = "setViewPoint";

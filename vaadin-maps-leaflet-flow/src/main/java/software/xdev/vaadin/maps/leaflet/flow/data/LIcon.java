@@ -26,6 +26,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import software.xdev.vaadin.maps.leaflet.flow.LMap;
 
 
 public class LIcon
@@ -47,8 +48,8 @@ public class LIcon
 		this.setPopupAnchor(1, -34);
 		this.setShadowSize(41, 41);
 		this.setShadowAnchor(12, 41);
-		this.iconUrl = "https://unpkg.com/leaflet@1.8.0/dist/images/marker-icon.png";
-		this.shadowUrl = "https://unpkg.com/leaflet@1.8.0/dist/images/marker-shadow.png";
+		this.iconUrl = "https://unpkg.com/leaflet@" + LMap.LEAFLET_VERSION + "/dist/images/marker-icon.png";
+		this.shadowUrl = "https://unpkg.com/leaflet@" + LMap.LEAFLET_VERSION + "/dist/images/marker-shadow.png";
 		this.type = "Icon";
 		
 	}
