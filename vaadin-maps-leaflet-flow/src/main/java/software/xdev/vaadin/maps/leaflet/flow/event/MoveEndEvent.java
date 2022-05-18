@@ -5,13 +5,13 @@ import com.vaadin.flow.component.DomEvent;
 import com.vaadin.flow.component.EventData;
 import elemental.json.JsonObject;
 import software.xdev.vaadin.maps.leaflet.flow.LMap;
-import software.xdev.vaadin.maps.leaflet.flow.data.LeafBoundaries;
+import software.xdev.vaadin.maps.leaflet.flow.data.Boundaries;
 import software.xdev.vaadin.maps.leaflet.flow.data.LLatLng;
 import software.xdev.vaadin.maps.leaflet.flow.data.convert.JsonLeafletConverter;
 
 @DomEvent("map-leaflet-viewport-move-end")
 public class MoveEndEvent extends ComponentEvent<LMap> {
-    private final LeafBoundaries boundaries;
+    private final Boundaries boundaries;
     private final LLatLng center;
 
     public MoveEndEvent(final LMap source, final boolean fromClient,
@@ -27,10 +27,10 @@ public class MoveEndEvent extends ComponentEvent<LMap> {
         LLatLng northWestCoordinates = JsonLeafletConverter.jsonValue2LLatLng(northWest);
         LLatLng southEastCoordinates = JsonLeafletConverter.jsonValue2LLatLng(southEast);
         LLatLng southWestCoordinates = JsonLeafletConverter.jsonValue2LLatLng(southWest);
-        this.boundaries = new LeafBoundaries(northEastCoordinates, northWestCoordinates, southEastCoordinates, southWestCoordinates);
+        this.boundaries = new Boundaries(northEastCoordinates, northWestCoordinates, southEastCoordinates, southWestCoordinates);
     }
 
-    public LeafBoundaries getBoundaries() {
+    public Boundaries getBoundaries() {
         return boundaries;
     }
 

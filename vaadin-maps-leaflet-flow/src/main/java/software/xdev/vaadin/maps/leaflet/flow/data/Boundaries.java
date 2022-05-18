@@ -8,7 +8,7 @@ package software.xdev.vaadin.maps.leaflet.flow.data;
  *
  * This object has no corresponding equivalent in Leaflet but is used for providing data from events for example.
  */
-public class LeafBoundaries {
+public class Boundaries {
     private LLatLng northEast;
     private LLatLng northWest;
     private LLatLng southEast;
@@ -46,22 +46,22 @@ public class LeafBoundaries {
         this.southWest = southWest;
     }
 
-    public LeafBoundaries(LLatLng northEast, LLatLng northWest, LLatLng southEast, LLatLng southWest) {
+    public Boundaries(LLatLng northEast, LLatLng northWest, LLatLng southEast, LLatLng southWest) {
         setNorthEast(northEast);
         setNorthWest(northWest);
         setSouthEast(southEast);
         setSouthWest(southWest);
     }
 
-    public static LeafBoundaries of(double northEastLat, double northEastLng,
-                                    double northWestLat, double northWestLng,
-                                    double southEastLat, double southEastLng,
-                                    double southWestLat, double southWestLng)
+    public static Boundaries of(double northEastLat, double northEastLng,
+                                double northWestLat, double northWestLng,
+                                double southEastLat, double southEastLng,
+                                double southWestLat, double southWestLng)
     {
         LLatLng northEastCoordinates = new LLatLng(northEastLat, northEastLng);
         LLatLng northWestCoordinates = new LLatLng(northWestLat, northWestLng);
         LLatLng southEastCoordinates = new LLatLng(southEastLat, southEastLng);
         LLatLng southWestCoordinates = new LLatLng(southWestLat, southWestLng);
-        return new LeafBoundaries(northEastCoordinates, northWestCoordinates, southEastCoordinates, southWestCoordinates);
+        return new Boundaries(northEastCoordinates, northWestCoordinates, southEastCoordinates, southWestCoordinates);
     }
 }

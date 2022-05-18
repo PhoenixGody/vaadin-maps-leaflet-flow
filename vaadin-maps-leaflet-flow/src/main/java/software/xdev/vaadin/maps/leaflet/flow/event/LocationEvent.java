@@ -8,7 +8,7 @@ import software.xdev.vaadin.maps.leaflet.flow.LMap;
 
 import com.vaadin.flow.component.ComponentEvent;
 import software.xdev.vaadin.maps.leaflet.flow.data.LLatLng;
-import software.xdev.vaadin.maps.leaflet.flow.data.LeafBoundaries;
+import software.xdev.vaadin.maps.leaflet.flow.data.Boundaries;
 import software.xdev.vaadin.maps.leaflet.flow.data.convert.JsonLeafletConverter;
 
 import java.math.BigDecimal;
@@ -25,7 +25,7 @@ public class LocationEvent extends ComponentEvent<LMap> {
     private final Double speed;
     private final BigInteger timestamp;
 
-    private final LeafBoundaries boundaries;
+    private final Boundaries boundaries;
 
     public LocationEvent(LMap source,
                          boolean fromClient,
@@ -46,7 +46,7 @@ public class LocationEvent extends ComponentEvent<LMap> {
         LLatLng northWestCoordinates = JsonLeafletConverter.jsonValue2LLatLng(northWest);
         LLatLng southEastCoordinates = JsonLeafletConverter.jsonValue2LLatLng(southEast);
         LLatLng southWestCoordinates = JsonLeafletConverter.jsonValue2LLatLng(southWest);
-        this.boundaries = new LeafBoundaries(northEastCoordinates, northWestCoordinates, southEastCoordinates, southWestCoordinates);
+        this.boundaries = new Boundaries(northEastCoordinates, northWestCoordinates, southEastCoordinates, southWestCoordinates);
 
         this.accuracy = accuracy;
         this.altitude = altitude;
