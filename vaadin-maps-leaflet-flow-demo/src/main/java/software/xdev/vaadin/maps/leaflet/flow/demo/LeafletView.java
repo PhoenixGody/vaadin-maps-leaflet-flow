@@ -105,11 +105,12 @@ public class LeafletView extends VerticalLayout
 	{
 		this.markerZob = new LMarker(49.673470, 12.160108);
 		this.markerZob.setPopup("Central bus station");
-		
+		this.markerZob.setDivIcon(new LVaadinIconBasedIcon(VaadinIcon.BUS, "#E89C00", "#266235", "#266235"));
+
 		final LMarker markerXDev = new LMarker(49.675806677512824, 12.160990185846394);
 		final LIcon xDevLogo = new LIcon(
 			"https://www.xing.com/img/custom/communities/communities_files/f/f/6/32758/large/XDEV_600x600_red.png?1438789458");
-		
+
 		// other option:
 		// xDevLogo.setIconUrl(
 		// "https://www.xing.com/img/custom/communities/communities_files/f/f/6/32758/large/XDEV_600x600_red.png?1438789458");
@@ -121,13 +122,14 @@ public class LeafletView extends VerticalLayout
 		final LMarker markerInfo = new LMarker(49.674095, 12.162257);
 		final LDivIcon div = new LDivIcon(
 			"<p><center><b>Welcome to Weiden in der Oberpfalz!</b></center></p><p>This Demo shows you different Markers,<br> Popups, Polygon and other Stuff</p>");
+		div.setIconSize(280, 100);
 		
 		// other options:
 		// div.setIconSize(265, 90);
 		// div.setHtml(
 		// "<p><center><b>Welcome to Weiden in der Oberpfalz!</b></center></p><p>This Demo shows you different Markers,
 		// Popups, Polygon and other Stuff</p>");
-		markerInfo.setDivIcon(div);
+		//markerInfo.setDivIcon(div);
 		
 		final LPolygon polygonNoc = new LPolygon(
 			Arrays.asList(
@@ -141,9 +143,11 @@ public class LeafletView extends VerticalLayout
 		polygonNoc.setFillOpacity(0.8);
 		polygonNoc.setStroke(false);
 		polygonNoc.setPopup("NOC-Nordoberpfalz Center");
-		
+
 		this.markerRathaus = new LMarker(49.675519, 12.163868);
 		this.markerRathaus.setPopup("Old Town Hall");
+
+		this.markerRathaus.setDivIcon(new LSvgIcon("01"));
 
 		this.circleRange = new LCircle(49.675126, 12.160733, 450);
 		
@@ -194,8 +198,7 @@ public class LeafletView extends VerticalLayout
 
 		this.map.setHeight("700px");
 		this.map.setWidth("1000px");
-		this.map.addMarkerClickListener(ev ->
-		{
+		this.map.addMarkerClickListener(ev -> {
 			System.out.println(ev.getMapItemId());
 		}); // add some logic here for called Markers (token)
 
@@ -208,11 +211,10 @@ public class LeafletView extends VerticalLayout
 			polygonNoc,
 			this.markerRathaus);
 
-		this.markerRathaus.bindTooltip(new LTooltip("This is a tooltip", this.markerRathaus, new LTooltipOptions(null, null, true, null, null)));
+		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", this.markerRathaus, new LTooltipOptions(null, null, true, null, null)));
 		LPopupOptions rathausPopupOptions = new LPopupOptions();
 		rathausPopupOptions.setCloseButton(false);
-		rathausPopupOptions.setOffset(new LPoint(20, 40));
-		this.markerRathaus.bindPopup(new LPopup("This is a popup!", this.markerRathaus, rathausPopupOptions));
+		this.markerRathaus.bindPopup(new LPopup("Unterer Markt 2-6, 92637 Weiden in der Oberpfalz", this.markerRathaus, rathausPopupOptions));
 
 		this.add(this.map);
 	}
