@@ -64,6 +64,8 @@ public class LMap extends Component implements HasSize, HasStyle
 	private static final String START_LOCATE_FUNCTION = "startLocate";
 	private static final String STOP_LOCATE_FUNCTION = "stopLocate";
 
+	private static final String ZOOM_TO_CONTENT_FUNCTION = "zoomToContent";
+
 	private LCenter center;
 	private final Map<String, LManagedComponent> components = new TreeMap<>();
 
@@ -287,5 +289,9 @@ public class LMap extends Component implements HasSize, HasStyle
 	public Registration addOnLocateFailListener(final ComponentEventListener<LocationErrorEvent> listener)
 	{
 		return ComponentUtil.addListener(this, LocationErrorEvent.class, listener);
+	}
+
+	public void zoomToContent() {
+		this.getElement().callJsFunction(ZOOM_TO_CONTENT_FUNCTION);
 	}
 }

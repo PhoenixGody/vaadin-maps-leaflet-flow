@@ -83,6 +83,13 @@ export class LeafletMap extends PolymerElement {
     _initMap() {
         const leafletMapElement = this;
         this.map = new L.map(this.$.divMap);
+        // this is a featuregroup that contains alls features that are relevant for being able to zoom to the content
+        // note that the features area also added to the map but the zoomToContentFeautreGroup is not.
+        // This is intended as we just need this featureGroup for getting the bounds of the added features.
+        // It would be even better if there was a flow-counterpart to adding custom featureGroups that allow then
+        // zooming to the content.
+        this.zoomToContentFeautreGroup = L.featureGroup();
+
         this.map.on('moveend', function (e) {
             let center = e.target.getCenter();
             let bounds = e.target.getBounds();
@@ -148,7 +155,10 @@ export class LeafletMap extends PolymerElement {
         } else {
             leafIcon = new L.icon(obj.properties.icon);
         }    
-        var item = L.marker(obj.geometry.coordinates, {icon: leafIcon}).addTo(this.map);
+        var item = L.marker(obj.geometry.coordinates, {icon: leafIcon});
+        item.addTo(this.map);
+        this.zoomToContentFeautreGroup.addLayer(item);
+
         this.items.set(itemId, item);
 
         // only for deprecated calls; there exists a bindPopup function that is better suited
@@ -176,7 +186,9 @@ export class LeafletMap extends PolymerElement {
     }
 
     addPolygon(itemId, obj) {
-        var item = L.polygon(obj.geometry.coordinates, obj.properties).addTo(this.map);
+        var item = L.polygon(obj.geometry.coordinates, obj.properties);
+        item.addTo(this.map);
+        this.zoomToContentFeautreGroup.addLayer(item);
 
         // only for deprecated calls; there exists a bindPopup function that is better suited
         if (obj.properties.popup != null) {
@@ -187,7 +199,9 @@ export class LeafletMap extends PolymerElement {
     }
 
     addCircle(itemId, obj) {
-        var item = L.circle(obj.geometry.coords, obj.properties).addTo(this.map);
+        var item = L.circle(obj.geometry.coords, obj.properties);
+        item.addTo(this.map);
+        this.zoomToContentFeautreGroup.addLayer(item);
 
         // only for deprecated calls; there exists a bindPopup function that is better suited
         if (obj.properties.popup != null) {
@@ -291,6 +305,11 @@ export class LeafletMap extends PolymerElement {
 
     stopLocate() {
         this.map.stopLocate();
+    }
+
+    zoomToContent() {
+        let latlngbounds = this.zoomToContentFeautreGroup.getBounds();
+        this.map.fitBounds(latlngbounds);
     }
 }
 

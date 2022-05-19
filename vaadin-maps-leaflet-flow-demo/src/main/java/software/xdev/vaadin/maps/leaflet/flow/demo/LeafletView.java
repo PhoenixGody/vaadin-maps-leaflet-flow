@@ -52,6 +52,8 @@ public class LeafletView extends VerticalLayout
 
 	private final Button btnStartLocation = new Button("Start locating", this::startLocation);
 	private final Button btnStopLocation = new Button("Stop locating", this::stopLocation);
+	private final Button btnZoomToContent = new Button("Zoom to content", this::doZoomToContent);
+
 
 	private LMap map;
 	
@@ -74,7 +76,7 @@ public class LeafletView extends VerticalLayout
 		this.initMapComponents();
 		
 		this.btnLunch.addClickListener(this::btnLunchClick);
-		this.add(this.btnLunch, this.btnOpenDialog);
+		this.add(this.btnLunch, this.btnOpenDialog, this.btnZoomToContent);
 		this.add(new HorizontalLayout(this.btnSetLayer, this.btnRemoveLayer));
 		this.add(new HorizontalLayout(this.btnStartLocation, this.btnStopLocation));
 		this.add(new Button("open Townhall Tooltip", e -> this.markerRathaus.toggleTooltip()));
@@ -105,7 +107,7 @@ public class LeafletView extends VerticalLayout
 	{
 		this.markerZob = new LMarker(49.673470, 12.160108);
 		this.markerZob.setPopup("Central bus station");
-		this.markerZob.setDivIcon(new LVaadinIconBasedIcon(VaadinIcon.BUS, "#E89C00", "#266235", "#266235"));
+		this.markerZob.setDivIcon(new LVaadinIconBasedIcon(VaadinIcon.BUS, "#E89C00", "#55266235", "#266235"));
 
 		final LMarker markerXDev = new LMarker(49.675806677512824, 12.160990185846394);
 		final LIcon xDevLogo = new LIcon(
@@ -234,5 +236,9 @@ public class LeafletView extends VerticalLayout
 
 	private void stopLocation(ClickEvent<Button> buttonClickEvent) {
 		this.map.stopLocate();
+	}
+
+	private void doZoomToContent(ClickEvent<Button> buttonClickEvent) {
+		this.map.zoomToContent();
 	}
 }
