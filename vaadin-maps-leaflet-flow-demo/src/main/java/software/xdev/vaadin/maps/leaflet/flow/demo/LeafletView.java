@@ -1,7 +1,11 @@
 package software.xdev.vaadin.maps.leaflet.flow.demo;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.vaadin.flow.component.ClickEvent;
@@ -14,6 +18,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
+import elemental.json.JsonValue;
+import elemental.json.impl.JsonUtil;
+import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 import software.xdev.vaadin.maps.leaflet.flow.LMap;
 import software.xdev.vaadin.maps.leaflet.flow.data.*;
 import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
@@ -133,7 +141,7 @@ public class LeafletView extends VerticalLayout
 		// Popups, Polygon and other Stuff</p>");
 		//markerInfo.setDivIcon(div);
 		
-		final LPolygon polygonNoc = new LPolygon(
+		final LPolygonBase polygonNoc = new LPolygon(
 			Arrays.asList(
 				new LPoint(49.674910, 12.159202),
 				new LPoint(49.675719, 12.160248),
@@ -209,12 +217,42 @@ public class LeafletView extends VerticalLayout
 
 		map.addMoveEndListener(event -> System.out.println("moved!:"  + event.getBoundaries()));
 
+		// polygon example from string
+		LPolygonBase geoJsonPolygonWithHoles = new LPolygonGeoJson(LeafletView.loadDemoResource("geoJsonCoordinatesPolygonWithHoles.json"));
+		geoJsonPolygonWithHoles.setStrokeWeight(1);
+		geoJsonPolygonWithHoles.setFillColor("#000000");
+		geoJsonPolygonWithHoles.setFillOpacity(0.5);
+		geoJsonPolygonWithHoles.setFill(true);
+		// set fillRule because: we do not want to fill the holes in the polygon; see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-rule
+		geoJsonPolygonWithHoles.setFillRule("evenodd");
+
+		LPolygonBase multiPolygon = new LMultiPolygonGeoJson(LeafletView.loadDemoResource("geoJsonCoordinatesMultiPolygon.json"));
+		multiPolygon.setFill(true);
+		multiPolygon.setFillColor("#4587b0");
+		multiPolygon.setFillOpacity(1.0);
+
+
+		// polygon example from JsonValue
+		String geoJsonPolygonWithoutHolesStr = LeafletView.loadDemoResource("geoJsonCoordinatesPolygonWithoutHoles.json");
+		JsonValue geoJsonPolygon = JsonUtil.parse(geoJsonPolygonWithoutHolesStr);
+		LPolygonBase geoJsonPolygonWithoutHoles = new LPolygonGeoJson(geoJsonPolygon);
+		geoJsonPolygonWithoutHoles.setFillColor("#66cc99");
+		geoJsonPolygonWithoutHoles.setFillOpacity(0.8);
+		geoJsonPolygonWithoutHoles.setFill(true);
+
 		this.map.addLComponents(
 			markerXDev,
 			markerInfo,
 			this.markerZob,
 			polygonNoc,
-			this.markerRathaus);
+			this.markerRathaus,
+			geoJsonPolygonWithHoles,
+			multiPolygon,
+			geoJsonPolygonWithoutHoles
+			);
+
+		geoJsonPolygonWithHoles.bindPopup(new LPopup("This is a Polygon with holes", geoJsonPolygonWithHoles, new LPopupOptions()));
+		geoJsonPolygonWithoutHoles.bindPopup(new LPopup("This is a Polygon without holes", geoJsonPolygonWithoutHoles, new LPopupOptions()));
 
 		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", this.markerRathaus, new LTooltipOptions(null, null, true, null, null)));
 		LPopupOptions rathausPopupOptions = new LPopupOptions();
@@ -243,5 +281,16 @@ public class LeafletView extends VerticalLayout
 
 	private void doZoomToContent(ClickEvent<Button> buttonClickEvent) {
 		this.map.zoomToContent();
+	}
+
+	@NotNull
+	private static String loadDemoResource(@NotNull String name) {
+		try (InputStream inputStream = LeafletView.class.getResourceAsStream(name))
+		{
+			return IOUtils.toString(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

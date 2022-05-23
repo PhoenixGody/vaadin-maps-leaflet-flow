@@ -186,7 +186,9 @@ export class LeafletMap extends PolymerElement {
     }
 
     addPolygon(itemId, obj) {
-        var item = L.polygon(obj.geometry.coordinates, obj.properties);
+        let latlngs = this._extractCoordinates(obj);
+
+        var item = L.polygon(latlngs, obj.properties);
         item.addTo(this.map);
         this.zoomToContentFeautreGroup.addLayer(item);
 
@@ -310,6 +312,30 @@ export class LeafletMap extends PolymerElement {
     zoomToContent() {
         let latlngbounds = this.zoomToContentFeautreGroup.getBounds();
         this.map.fitBounds(latlngbounds);
+    }
+
+    /**
+     * extracts the coordinates from a given parameter object. This parameter object is populated by the flow side API.
+     * @param {Object} objWithCoords object with eiter a geometry or geoJson element that contains coordinate information
+     * @returns {Array} LatLngs as an array
+     * @private
+     */
+    _extractCoordinates(objWithCoords) {
+        let latlngs = null;
+        if (objWithCoords.geometry && objWithCoords.geometry.coordinates)
+            latlngs = objWithCoords.geometry.coordinates;
+        else if (objWithCoords.geoJson && objWithCoords.geoJson.coords && objWithCoords.geoJson.levelsDeep != null)
+        {
+            if (typeof(objWithCoords.geoJson.coords) === "string")
+                latlngs = L.GeoJSON.coordsToLatLngs(JSON.parse(objWithCoords.geoJson.coords), objWithCoords.geoJson.levelsDeep);
+            else
+                latlngs = L.GeoJSON.coordsToLatLngs(objWithCoords.geoJson.coords, objWithCoords.geoJson.levelsDeep);
+        }
+
+        if (latlngs === null)
+            throw new Error("No coordinates were provided to extract.");
+
+        return latlngs;
     }
 }
 
