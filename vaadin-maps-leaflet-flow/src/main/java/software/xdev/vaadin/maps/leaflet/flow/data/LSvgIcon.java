@@ -64,7 +64,7 @@ public class LSvgIcon extends LDivIcon {
         // credits go to "Matti Tahvonen" ("@mstahv" on github)
         // source: https://github.com/mstahv/v-leaflet/blob/a0e8dce3ae40bff264ef3202f64bc661f1173db1/src/main/java/org/vaadin/addon/leaflet/client/LeafletMarkerConnector.java#L116
         StringBuilder svgSb = new StringBuilder();
-        svgSb.append("<svg style=\"position:absolute\";width=\"100%\";height=\"100%\";>");
+        svgSb.append("<svg style=\"position:absolute;height: 100%;width: 100%;\">");
         svgSb.append("<path fill=\"");
         svgSb.append(pathFillColor);
         svgSb.append("\" stroke=\"");
