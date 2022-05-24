@@ -200,6 +200,9 @@ public class LeafletView extends VerticalLayout
 
 		this.map.setHeight("700px");
 		this.map.setWidth("1000px");
+		// it is necessary to inform the map the size has changed after modifying the size via the flow api because
+		// otherwise the map would not be displayed correctly.
+		this.map.getElement().executeJs("setTimeout(function (mapElement) {mapElement.invalidateSize(true);}, 1, this.map);");
 		this.map.addMarkerClickListener(ev -> {
 			System.out.println(ev.getMapItemId());
 		}); // add some logic here for called Markers (token)
