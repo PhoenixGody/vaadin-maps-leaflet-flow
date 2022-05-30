@@ -231,7 +231,6 @@ public class LeafletView extends VerticalLayout
 		multiPolygon.setFillColor("#4587b0");
 		multiPolygon.setFillOpacity(1.0);
 
-
 		// polygon example from JsonValue
 		String geoJsonPolygonWithoutHolesStr = LeafletView.loadDemoResource("geoJsonCoordinatesPolygonWithoutHoles.json");
 		JsonValue geoJsonPolygon = JsonUtil.parse(geoJsonPolygonWithoutHolesStr);
@@ -239,6 +238,16 @@ public class LeafletView extends VerticalLayout
 		geoJsonPolygonWithoutHoles.setFillColor("#66cc99");
 		geoJsonPolygonWithoutHoles.setFillOpacity(0.8);
 		geoJsonPolygonWithoutHoles.setFill(true);
+
+		LPolylineOptions options = new LPolylineOptions();
+		options.setInteractive(false);
+		options.setStroke(true);
+		options.setColor("green");
+		String geoJsonPolylineCoordsSerialized = LeafletView.loadDemoResource("geoJsonCoordinatesPolyline.json");
+		LPolylineBase geoJsonPolyline = new LPolylineGeoJson(geoJsonPolylineCoordsSerialized, options);
+
+		String geoJsonMultiPolylineCoordsSerialized = LeafletView.loadDemoResource("geoJsonCoordinatesMultiPolyline.json");
+		LPolylineBase geoJsonMultiPolyline = new LMultiPolylineGeoJson(geoJsonMultiPolylineCoordsSerialized, new LPolylineOptions());
 
 		this.map.addLComponents(
 			markerXDev,
@@ -248,7 +257,9 @@ public class LeafletView extends VerticalLayout
 			this.markerRathaus,
 			geoJsonPolygonWithHoles,
 			multiPolygon,
-			geoJsonPolygonWithoutHoles
+			geoJsonPolygonWithoutHoles,
+			geoJsonPolyline,
+			geoJsonMultiPolyline
 			);
 
 		geoJsonPolygonWithHoles.bindPopup(new LPopup("This is a Polygon with holes", geoJsonPolygonWithHoles, new LPopupOptions()));

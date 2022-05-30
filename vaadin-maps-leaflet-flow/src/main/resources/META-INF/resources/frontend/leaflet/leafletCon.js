@@ -200,6 +200,15 @@ export class LeafletMap extends PolymerElement {
         this.items.set(itemId, item);
     }
 
+    addPolyline(itemId, obj) {
+        let latlngs = this._extractCoordinates(obj);
+
+        let item = L.polyline(latlngs, obj.properties);
+        item.addTo(this.map);
+        this.zoomToContentFeautreGroup.addLayer(item);
+        this.items.set(itemId, item);
+    }
+
     addCircle(itemId, obj) {
         var item = L.circle(obj.geometry.coords, obj.properties);
         item.addTo(this.map);
