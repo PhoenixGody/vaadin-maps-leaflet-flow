@@ -33,7 +33,7 @@ import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
 public class LCircle extends LLayer
 {
 	private LPoint geometry;
-	private LPolygonOptions properties;
+	private LCircleOptions properties;
 	
 	/**
 	 * Creates a new circle
@@ -45,7 +45,7 @@ public class LCircle extends LLayer
 	{
 		super();
 		this.geometry = new LPoint(lat, lon);
-		this.properties = new LPolygonOptions();
+		this.properties = new LCircleOptions();
 		this.properties.setRadius(radius);
 	}
 	
@@ -59,19 +59,19 @@ public class LCircle extends LLayer
 		this.geometry = geometry;
 	}
 	
-	public LPolygonOptions getProperties()
+	public LCircleOptions getProperties()
 	{
 		return this.properties;
 	}
 	
-	public void setProperties(final LPolygonOptions properties)
+	public void setProperties(final LCircleOptions properties)
 	{
 		this.properties = properties;
 	}
 	
-	public boolean isStroke()
+	public Boolean isStroke()
 	{
-		return this.properties.isStroke();
+		return this.properties.getStroke();
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class LCircle extends LLayer
 		this.properties.setColor(strokeColor);
 	}
 	
-	public double getStrokeOpacity()
+	public Double getStrokeOpacity()
 	{
 		return this.properties.getOpacity();
 	}
@@ -114,7 +114,7 @@ public class LCircle extends LLayer
 		this.properties.setOpacity(strokeOpacity);
 	}
 	
-	public int getStrokeWeight()
+	public Integer getStrokeWeight()
 	{
 		return this.properties.getWeight();
 	}
@@ -183,9 +183,9 @@ public class LCircle extends LLayer
 		this.properties.setDashOffset(dashOffset);
 	}
 	
-	public boolean isFill()
+	public Boolean isFill()
 	{
-		return this.properties.isFill();
+		return this.properties.getFill();
 	}
 	
 	/**
@@ -214,7 +214,7 @@ public class LCircle extends LLayer
 		this.properties.setFillColor(fillColor);
 	}
 	
-	public double getFillOpacity()
+	public Double getFillOpacity()
 	{
 		return this.properties.getFillOpacity();
 	}
@@ -228,22 +228,7 @@ public class LCircle extends LLayer
 	{
 		this.properties.setFillOpacity(fillOpacity);
 	}
-	
-	public String getPopup()
-	{
-		return this.properties.getPopup();
-	}
-	
-	/**
-	 * Set Pop-up message.
-	 *
-	 * @param popup Message of the popup
-	 */
-	public void setPopup(final String popup)
-	{
-		this.properties.setPopup(popup);
-	}
-	
+
 	public String getFillRule()
 	{
 		return this.properties.getFillRule();
@@ -265,7 +250,7 @@ public class LCircle extends LLayer
 	
 	public boolean isNoClip()
 	{
-		return this.properties.isNoClip();
+		return this.properties.getNoClip();
 	}
 	
 	/**
@@ -299,7 +284,7 @@ public class LCircle extends LLayer
 		this.properties.setRadius(radius);
 	}
 	
-	public double getRadius()
+	public Double getRadius()
 	{
 		return this.properties.getRadius();
 	}
@@ -308,18 +293,11 @@ public class LCircle extends LLayer
 	public JsonValue toJson()
 	{
 		final JsonObject jsonObject = Json.createObject();
-		final ObjectMapper mapper = new ObjectMapper();
-		try
-		{
-			jsonObject.put("type", Json.create("Feature"));
-			jsonObject.put("geometry", Json.parse(mapper.writeValueAsString(this.geometry)));
-			jsonObject.put("properties", Json.parse(mapper.writeValueAsString(this.properties)));
-		}
-		catch(final JsonProcessingException e)
-		{
-			throw new RuntimeException(e);
-		}
-		
+		final JsonObject coords = Json.createObject();
+		coords.put("coords", this.geometry.toJson());
+		jsonObject.put("type", Json.create("Feature"));
+		jsonObject.put("geometry", coords);
+		jsonObject.put("properties", this.properties.toJson());
 		return jsonObject;
 	}
 

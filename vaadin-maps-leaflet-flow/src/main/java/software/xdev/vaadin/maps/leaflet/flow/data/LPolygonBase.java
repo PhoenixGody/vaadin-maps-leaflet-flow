@@ -15,11 +15,15 @@ public abstract class LPolygonBase extends LLayer {
     protected final LPolygonOptions properties;
 
     public LPolygonBase() {
-        this.properties = new LPolygonOptions();
+        this.properties = LPolygonOptions.createDefault();
     }
 
-    public boolean isStroke() {
-        return this.properties.isStroke();
+    public LPolygonBase(LPolygonOptions properties) {
+        this.properties = properties;
+    }
+
+    public Boolean isStroke() {
+        return this.properties.getStroke();
     }
 
     /**
@@ -44,7 +48,7 @@ public abstract class LPolygonBase extends LLayer {
         this.properties.setColor(strokeColor);
     }
 
-    public double getStrokeOpacity() {
+    public Double getStrokeOpacity() {
         return this.properties.getOpacity();
     }
 
@@ -57,7 +61,7 @@ public abstract class LPolygonBase extends LLayer {
         this.properties.setOpacity(strokeOpacity);
     }
 
-    public int getStrokeWeight() {
+    public Integer getStrokeWeight() {
         return this.properties.getWeight();
     }
 
@@ -116,8 +120,8 @@ public abstract class LPolygonBase extends LLayer {
         this.properties.setDashOffset(dashOffset);
     }
 
-    public boolean isFill() {
-        return this.properties.isFill();
+    public Boolean isFill() {
+        return this.properties.getFill();
     }
 
     /**
@@ -142,7 +146,7 @@ public abstract class LPolygonBase extends LLayer {
         this.properties.setFillColor(fillColor);
     }
 
-    public double getFillOpacity() {
+    public Double getFillOpacity() {
         return this.properties.getFillOpacity();
     }
 
@@ -184,7 +188,7 @@ public abstract class LPolygonBase extends LLayer {
     }
 
     public boolean isNoClip() {
-        return this.properties.isNoClip();
+        return this.properties.getNoClip();
     }
 
     /**
@@ -214,17 +218,8 @@ public abstract class LPolygonBase extends LLayer {
     public JsonValue toJson()
     {
         JsonObject jsonObject = Json.createObject();
-        final ObjectMapper mapper = new ObjectMapper();
-        try
-        {
-            jsonObject.put("type", Json.create("Feature"));
-            jsonObject.put("properties", Json.parse(mapper.writeValueAsString(this.properties)));
-        }
-        catch(final JsonProcessingException e)
-        {
-            throw new RuntimeException(e);
-        }
-
+        jsonObject.put("type", Json.create("Feature"));
+        jsonObject.put("properties", this.properties.toJson());
         return jsonObject;
     }
 
