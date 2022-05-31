@@ -29,6 +29,8 @@ public class LVaadinIconBasedIcon extends LSvgIcon {
 
     public LVaadinIconBasedIcon(@NotNull Icon icon, @Nullable String iconPathFill, @Nullable String iconPathStroke, @Nullable String vaadinIconFill) {
         super(null, iconPathFill, iconPathStroke, null);
+        if (vaadinIconFill != null)
+            icon.setColor(vaadinIconFill);
         vaadinIconHtml = icon.getElement().getOuterHTML();
 
         String htmlContent = this.getHtml();
