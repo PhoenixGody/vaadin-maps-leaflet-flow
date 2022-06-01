@@ -4,11 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.data.base.LComponent;
 
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public abstract class LManagedComponent implements LComponent {
     private String mapItemId;
     private LMap attachedMap;
+
+    private final ArrayDeque<Runnable> onAddQueue;
 
     @Override
     public String getMapItemId() {
@@ -16,11 +19,12 @@ public abstract class LManagedComponent implements LComponent {
     }
 
     public LManagedComponent() {
-        mapItemId = UUID.randomUUID().toString();
+        this(UUID.randomUUID().toString());
     }
 
     public LManagedComponent(@NotNull String mapItemId) {
         this.mapItemId = mapItemId;
+        onAddQueue = new ArrayDeque<>();
     }
 
     @NotNull
@@ -36,5 +40,10 @@ public abstract class LManagedComponent implements LComponent {
 
     protected void setAttachedMap(@Nullable LMap attachedMap) {
         this.attachedMap = attachedMap;
+    }
+
+    @NotNull
+    public ArrayDeque<Runnable> getOnAddQueue() {
+        return onAddQueue;
     }
 }

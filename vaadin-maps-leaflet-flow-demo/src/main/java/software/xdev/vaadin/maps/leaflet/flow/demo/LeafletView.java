@@ -225,6 +225,7 @@ public class LeafletView extends VerticalLayout
 		geoJsonPolygonWithHoles.setFill(true);
 		// set fillRule because: we do not want to fill the holes in the polygon; see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-rule
 		geoJsonPolygonWithHoles.setFillRule("evenodd");
+		geoJsonPolygonWithHoles.bindPopup(new LPopup("This is a Polygon with holes", new LPopupOptions()));
 
 		LPolygonBase multiPolygon = new LMultiPolygonGeoJson(LeafletView.loadDemoResource("geoJsonCoordinatesMultiPolygon.json"));
 		multiPolygon.setFill(true);
@@ -238,6 +239,7 @@ public class LeafletView extends VerticalLayout
 		geoJsonPolygonWithoutHoles.setFillColor("#66cc99");
 		geoJsonPolygonWithoutHoles.setFillOpacity(0.8);
 		geoJsonPolygonWithoutHoles.setFill(true);
+		geoJsonPolygonWithoutHoles.bindPopup(new LPopup("This is a Polygon without holes", new LPopupOptions()));
 
 		LPolylineOptions options = new LPolylineOptions();
 		options.setInteractive(false);
@@ -262,13 +264,10 @@ public class LeafletView extends VerticalLayout
 			geoJsonMultiPolyline
 			);
 
-		geoJsonPolygonWithHoles.bindPopup(new LPopup("This is a Polygon with holes", geoJsonPolygonWithHoles, new LPopupOptions()));
-		geoJsonPolygonWithoutHoles.bindPopup(new LPopup("This is a Polygon without holes", geoJsonPolygonWithoutHoles, new LPopupOptions()));
-
-		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", this.markerRathaus, new LTooltipOptions(null, null, true, null, null)));
+		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", new LTooltipOptions(null, null, true, null, null)));
 		LPopupOptions rathausPopupOptions = new LPopupOptions();
 		rathausPopupOptions.setCloseButton(false);
-		this.markerRathaus.bindPopup(new LPopup("Unterer Markt 2-6, 92637 Weiden in der Oberpfalz", this.markerRathaus, rathausPopupOptions));
+		this.markerRathaus.bindPopup(new LPopup("Unterer Markt 2-6, 92637 Weiden in der Oberpfalz", rathausPopupOptions));
 
 		this.add(this.map);
 	}

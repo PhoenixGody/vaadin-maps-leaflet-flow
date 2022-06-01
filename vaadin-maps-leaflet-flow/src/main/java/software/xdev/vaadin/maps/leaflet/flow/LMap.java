@@ -180,6 +180,9 @@ public class LMap extends Component implements HasSize, HasStyle
 		lComponent.setAttachedMap(this);
 		this.getComponents().put(lComponent.getMapItemId(), lComponent);
 		this.getElement().callJsFunction(lComponent.getJsFunctionForAddingToMap(), lComponent.getMapItemId(), lComponent.toJson());
+
+		while (lComponent.getOnAddQueue().size() > 0)
+			lComponent.getOnAddQueue().removeFirst().run();
 	}
 	
 	/**
