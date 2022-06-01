@@ -12,8 +12,27 @@ public abstract class LLayer extends LManagedComponent {
 
     public void toggleTooltip()
     {
-        assert this.isAttachedToMap();
-        this.getAttachedMap().getElement().executeJs(LMap.GET_ITEM_FUNCTION_CALL + ".toggleTooltip()", this.getMapItemId());
+        Runnable toggle = () -> {
+            this.getAttachedMap().getElement().executeJs(LMap.GET_ITEM_FUNCTION_CALL + ".toggleTooltip()", this.getMapItemId());
+        };
+
+        if (this.isAttachedToMap())
+            toggle.run();
+        else
+            getOnAddQueue().add(toggle);
+
+    }
+
+    public void togglePopup()
+    {
+        Runnable toggle = () -> {
+            this.getAttachedMap().getElement().executeJs(LMap.GET_ITEM_FUNCTION_CALL + ".togglePopup()", this.getMapItemId());
+        };
+
+        if (this.isAttachedToMap())
+            toggle.run();
+        else
+            getOnAddQueue().add(toggle);
     }
 
     /**

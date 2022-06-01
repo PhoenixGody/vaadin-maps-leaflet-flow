@@ -8,6 +8,10 @@ import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.data.LPoint;
 import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
 
+
+/**
+ * official Leaflet JS Options for Tooltips
+ */
 public class LTooltipOptions implements CanConvertToJson {
     private LPoint offset;
     private String direction;
@@ -28,6 +32,10 @@ public class LTooltipOptions implements CanConvertToJson {
     }
 
     public LTooltipOptions() {
+    }
+
+    public static LTooltipOptions create(){
+        return new LTooltipOptions();
     }
 
     @Override
@@ -52,13 +60,10 @@ public class LTooltipOptions implements CanConvertToJson {
         return result;
     }
 
+    // region getters
     @Nullable
     public LPoint getOffset() {
         return offset;
-    }
-
-    public void setOffset(@Nullable LPoint offset) {
-        this.offset = offset;
     }
 
     @Nullable
@@ -66,34 +71,46 @@ public class LTooltipOptions implements CanConvertToJson {
         return direction;
     }
 
-    public void setDirection(@Nullable String direction) {
-        this.direction = direction;
-    }
-
     @Nullable
     public Boolean getPermanent() {
         return permanent;
-    }
-
-    public void setPermanent(@Nullable Boolean permanent) {
-        this.permanent = permanent;
     }
 
     @Nullable
     public Boolean getSticky() {
         return sticky;
     }
-
-    public void setSticky(@Nullable Boolean sticky) {
-        this.sticky = sticky;
-    }
-
     @Nullable
     public Double getOpacity() {
         return opacity;
     }
+    // endregion getters
 
-    public void setOpacity(@Nullable Double opacity) {
-        this.opacity = opacity;
+    // region setters
+    public LTooltipOptions setOffset(@Nullable LPoint offset) {
+        this.offset = offset;
+        return this;
     }
+
+    public LTooltipOptions setDirection(@Nullable String direction) {
+        this.direction = direction;
+        return this;
+    }
+
+    public LTooltipOptions setPermanent(@Nullable Boolean permanent) {
+        this.permanent = permanent;
+        return this;
+    }
+
+    public LTooltipOptions setSticky(@Nullable Boolean sticky) {
+        this.sticky = sticky;
+        return this;
+    }
+
+    public LTooltipOptions setOpacity(@Nullable Double opacity) {
+        this.opacity = opacity;
+        return this;
+    }
+    //endregion setters
+
 }

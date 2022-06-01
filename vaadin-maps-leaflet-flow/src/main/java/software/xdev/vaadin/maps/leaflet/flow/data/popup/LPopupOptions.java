@@ -14,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.data.LPoint;
 import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
 
+/**
+ * official Leaflet JS Options for Popups
+ */
 public class LPopupOptions implements CanConvertToJson {
     private LPoint offset;
     private Integer maxWidth;
@@ -30,6 +33,10 @@ public class LPopupOptions implements CanConvertToJson {
     private String className;
 
     public LPopupOptions() {
+    }
+
+    public static LPopupOptions create() {
+        return new LPopupOptions();
     }
 
 
@@ -130,56 +137,69 @@ public class LPopupOptions implements CanConvertToJson {
 
     // region setter
 
-    public void setOffset(@Nullable LPoint offset) {
+    public LPopupOptions setOffset(@Nullable LPoint offset) {
         this.offset = offset;
+        return this;
     }
 
-    public void setMaxWidth(@Nullable Integer maxWidth) {
+    public LPopupOptions setMaxWidth(@Nullable Integer maxWidth) {
         this.maxWidth = maxWidth;
+        return this;
     }
 
-    public void setMinWidth(@Nullable Integer minWidth) {
+    public LPopupOptions setMinWidth(@Nullable Integer minWidth) {
         this.minWidth = minWidth;
+        return this;
     }
 
-    public void setMaxHeight(@Nullable Integer maxHeight) {
+    public LPopupOptions setMaxHeight(@Nullable Integer maxHeight) {
         this.maxHeight = maxHeight;
+        return this;
     }
 
-    public void setAutoPan(@Nullable Boolean autoPan) {
+    public LPopupOptions setAutoPan(@Nullable Boolean autoPan) {
         this.autoPan = autoPan;
+        return this;
     }
 
-    public void setAutoPanPaddingTopLeft(@Nullable LPoint autoPanPaddingTopLeft) {
+    public LPopupOptions setAutoPanPaddingTopLeft(@Nullable LPoint autoPanPaddingTopLeft) {
         this.autoPanPaddingTopLeft = autoPanPaddingTopLeft;
+        return this;
     }
 
-    public void setAutoPanPaddingBottomRight(@Nullable LPoint autoPanPaddingBottomRight) {
+    public LPopupOptions setAutoPanPaddingBottomRight(@Nullable LPoint autoPanPaddingBottomRight) {
         this.autoPanPaddingBottomRight = autoPanPaddingBottomRight;
+        return this;
     }
 
-    public void setAutoPanPadding(@Nullable LPoint autoPanPadding) {
+    public LPopupOptions setAutoPanPadding(@Nullable LPoint autoPanPadding) {
         this.autoPanPadding = autoPanPadding;
+        return this;
     }
 
-    public void setKeepInView(@Nullable Boolean keepInView) {
+    public LPopupOptions setKeepInView(@Nullable Boolean keepInView) {
         this.keepInView = keepInView;
+        return this;
     }
 
-    public void setCloseButton(@Nullable Boolean closeButton) {
+    public LPopupOptions setCloseButton(@Nullable Boolean closeButton) {
         this.closeButton = closeButton;
+        return this;
     }
 
-    public void setAutoClose(@Nullable Boolean autoClose) {
+    public LPopupOptions setAutoClose(@Nullable Boolean autoClose) {
         this.autoClose = autoClose;
+        return this;
     }
 
-    public void setCloseOnClick(@Nullable Boolean closeOnClick) {
+    public LPopupOptions setCloseOnClick(@Nullable Boolean closeOnClick) {
         this.closeOnClick = closeOnClick;
+        return this;
     }
 
-    public void setClassName(@Nullable String className) {
+    public LPopupOptions setClassName(@Nullable String className) {
         this.className = className;
+        return this;
     }
 
     // endregion

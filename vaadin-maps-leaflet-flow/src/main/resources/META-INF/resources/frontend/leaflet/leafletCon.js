@@ -273,6 +273,8 @@ export class LeafletMap extends PolymerElement {
                 "Maybe the Layer is not yet added?");
 
         layer.bindTooltip(params.tooltipContent, params.tooltipOptions);
+        if (params.tooltipExtras.openOnAdd)
+            layer.openTooltip();
     }
 
     unbindTooltip(layerItemId) {
@@ -292,6 +294,8 @@ export class LeafletMap extends PolymerElement {
                 "Maybe the Layer is not yet added?");
 
         layer.bindPopup(params.popupContent, params.popupOptions);
+        if (params.popupExtras.openOnAdd)
+            layer.togglePopup();
     }
 
     unbindPopup(layerItemId) {
