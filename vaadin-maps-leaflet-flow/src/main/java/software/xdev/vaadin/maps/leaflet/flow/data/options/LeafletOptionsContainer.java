@@ -18,7 +18,7 @@ public class LeafletOptionsContainer implements Map<LeafletOptionsContainerKey<?
     @Nullable
     public <T> T getTyped(LeafletOptionsContainerKey<T> key)
     {
-        Object value = delegateContainer.get(key.getName());
+        Object value = delegateContainer.get(key);
         if (value == null)
         {
             return null;
@@ -70,7 +70,7 @@ public class LeafletOptionsContainer implements Map<LeafletOptionsContainerKey<?
     }
 
     public boolean containsKey(LeafletOptionsContainerKey<?> key) {
-        return delegateContainer.containsKey(key.getName());
+        return delegateContainer.containsKey(key);
     }
 
     @Override
@@ -121,12 +121,12 @@ public class LeafletOptionsContainer implements Map<LeafletOptionsContainerKey<?
 
     @Nullable
     @Override
-    public Object put(LeafletOptionsContainerKey<?> key, Object value) {
-        return delegateContainer.put(key, value);
+    public Object put(LeafletOptionsContainerKey key, Object value) {
+        throw new UnsupportedOperationException("put is not allowed here. Use putTyped instead to maintain safety.");
     }
 
     @Override
     public void putAll(@NotNull Map<? extends LeafletOptionsContainerKey<?>, ?> m) {
-        delegateContainer.putAll(m);
+        throw new UnsupportedOperationException("putAll is not allowed here. Use putTyped instead to maintain safety.");
     }
 }

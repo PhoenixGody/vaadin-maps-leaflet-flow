@@ -17,7 +17,7 @@ public interface HasPathOptions extends LeafletOptionsShared {
     LeafletOptionsContainerKey<String> LINE_JOIN = new LeafletOptionsContainerKey<>(String.class, "lineJoin");
     LeafletOptionsContainerKey<String> DASH_ARRAY = new LeafletOptionsContainerKey<>(String.class, "dashArray");
     LeafletOptionsContainerKey<String> DASH_OFFSET = new LeafletOptionsContainerKey<>(String.class, "dashOffset");
-    LeafletOptionsContainerKey<Boolean> FILL = new LeafletOptionsContainerKey<>(Boolean.class, "fillColor");
+    LeafletOptionsContainerKey<Boolean> FILL = new LeafletOptionsContainerKey<>(Boolean.class, "fill");
     LeafletOptionsContainerKey<String> FILL_COLOR = new LeafletOptionsContainerKey<>(String.class, "fillColor");
     LeafletOptionsContainerKey<Double> FILL_OPACITY = new LeafletOptionsContainerKey<>(Double.class, "fillOpacity");
     LeafletOptionsContainerKey<String> FILL_RULE = new LeafletOptionsContainerKey<>(String.class, "fillRule");
