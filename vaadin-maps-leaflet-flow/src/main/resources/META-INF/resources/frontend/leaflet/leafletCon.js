@@ -247,6 +247,14 @@ export class LeafletMap extends PolymerElement {
         this.activeTile = null;
     }
 
+    onPopupMouseIn (event) {
+        this.openPopup();
+    };
+
+    onPopupMouseOut (event) {
+        this.closePopup();
+    };
+
     addTileLayer(itemId, layer) {
         let item = L.tileLayer(layer.tile.link,{attribution: layer.tile.attribution, maxZoom: layer.tile.zoom, id: layer.tile.id});
 
@@ -296,6 +304,12 @@ export class LeafletMap extends PolymerElement {
         layer.bindPopup(params.popupContent, params.popupOptions);
         if (params.popupExtras.openOnAdd)
             layer.togglePopup();
+
+        if (params.popupExtras.openOnMouseIn)
+            layer.on('mouseover', this.onPopupMouseIn);
+
+        if (params.popupExtras.closeOnMouseOut)
+            layer.on('mouseout', this.onPopupMouseOut);
     }
 
     unbindPopup(layerItemId) {
@@ -304,6 +318,8 @@ export class LeafletMap extends PolymerElement {
             throw new Error("Tooltip could not be added: the itemId of the target layer was not found. " +
                 "Maybe the Layer is not yet added?");
 
+        layer.off('mouseover', this.onPopupMouseIn);
+        layer.off('mouseout', this.onPopupMouseOut);
         layer.unbindPopup();
     }
 

@@ -155,7 +155,7 @@ public class LeafletView extends VerticalLayout
 		polygonNoc.setFillColor("#3366ff");
 		polygonNoc.setFillOpacity(0.8);
 		polygonNoc.setStroke(false);
-		polygonNoc.bindTooltip(new LTooltip("This is the NOC-Nordoberpfalz Center", LTooltipOptions.create()));
+		polygonNoc.bindTooltip(new LTooltip("Tip: This is the NOC-Nordoberpfalz Center", LTooltipOptions.create()));
 
 		this.markerRathaus = new LMarker(49.675519, 12.163868);
 		this.markerRathaus.setPopup("Old Town Hall");
@@ -254,7 +254,10 @@ public class LeafletView extends VerticalLayout
 		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", new LTooltipOptions(null, null, true, null, null)));
 		LPopupOptions rathausPopupOptions = new LPopupOptions();
 		rathausPopupOptions.setCloseButton(false);
-		this.markerRathaus.bindPopup(new LPopup("Unterer Markt 2-6, 92637 Weiden in der Oberpfalz", rathausPopupOptions));
+		LPopupExtras popupExtras = LPopupExtras.create()
+				.setOpenOnMouseIn(true)
+				.setCloseOnMouseOut(true);
+		this.markerRathaus.bindPopup(new LPopup("Unterer Markt 2-6, 92637 Weiden in der Oberpfalz", rathausPopupOptions, popupExtras));
 
 		this.add(this.map);
 		this.add(new HorizontalLayout(polygonWithHolesTogglePopupBtn, polygonWithoutHolesTogglePopupBtn));

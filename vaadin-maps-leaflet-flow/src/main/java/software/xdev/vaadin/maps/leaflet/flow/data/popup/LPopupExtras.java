@@ -12,9 +12,13 @@ import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
 public class LPopupExtras implements CanConvertToJson {
 
     private boolean openOnAdd;
+    private boolean openOnMouseIn;
+    private boolean closeOnMouseOut;
 
     public LPopupExtras() {
         openOnAdd = false;
+        openOnMouseIn = false;
+        closeOnMouseOut = false;
     }
 
     public LPopupExtras(boolean openOnAdd) {
@@ -29,6 +33,8 @@ public class LPopupExtras implements CanConvertToJson {
     public JsonValue toJson() {
         final JsonObject result = Json.createObject();
         result.put("openOnAdd", getOpenOnAdd());
+        result.put("openOnMouseIn", getOpenOnMouseIn());
+        result.put("closeOnMouseOut", getCloseOnMouseOut());
         return result;
     }
 
@@ -39,11 +45,29 @@ public class LPopupExtras implements CanConvertToJson {
         return this;
     }
 
+    public LPopupExtras setOpenOnMouseIn(boolean openOnMouseIn) {
+        this.openOnMouseIn = openOnMouseIn;
+        return this;
+    }
+
+    public LPopupExtras setCloseOnMouseOut(boolean closeOnMouseOut) {
+        this.closeOnMouseOut = closeOnMouseOut;
+        return this;
+    }
+
     // endregion
 
     // region getters
     public boolean getOpenOnAdd() {
         return openOnAdd;
+    }
+
+    public boolean getOpenOnMouseIn() {
+        return openOnMouseIn;
+    }
+
+    public boolean getCloseOnMouseOut() {
+        return closeOnMouseOut;
     }
 
     // endregion
