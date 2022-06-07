@@ -40,6 +40,8 @@ public interface LeafletOptionsShared extends CanConvertToJson, HasLeafletOption
             result = Json.create((Integer) value);
         else if (value instanceof JsonValue)
             result = (JsonValue) value;
+        else if (value instanceof CanConvertToJson)
+            result = ((CanConvertToJson) value).toJson();
         else
             throw new IllegalArgumentException("unconvertable type given");
 

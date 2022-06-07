@@ -24,13 +24,21 @@ package software.xdev.vaadin.maps.leaflet.flow.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import elemental.json.Json;
+import elemental.json.JsonObject;
+import elemental.json.JsonValue;
 import software.xdev.vaadin.maps.leaflet.flow.LMap;
+import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
 
 
-public class LIcon
+public class LIcon implements CanConvertToJson
 {
+	@JsonIgnore
 	private String type;
 	private String iconUrl;
 	
@@ -181,5 +189,23 @@ public class LIcon
 		this.shadowAnchor.clear();
 		this.shadowAnchor.add(x);
 		this.shadowAnchor.add(y);
+	}
+
+	@Override
+	public JsonValue toJson() {
+		final JsonObject jsonObject = Json.createObject();
+		final ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			//using jackson json just like bevor moving the code because at this stage it is simple
+			jsonObject.put("properties", Json.parse(mapper.writeValueAsString(this)));
+		}
+		catch(final JsonProcessingException e)
+		{
+			throw new RuntimeException(e);
+		}
+		jsonObject.put("type", this.getType());
+
+		return jsonObject;
 	}
 }

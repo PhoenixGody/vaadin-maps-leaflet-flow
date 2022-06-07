@@ -228,4 +228,8 @@ public abstract class LPolygonBase extends LLayer {
     {
         return "addPolygon";
     }
+
+    public LPolygonOptions getProperties() {
+        return properties;
+    }
 }

@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 import elemental.json.JsonValue;
+import org.jetbrains.annotations.NotNull;
 
 
 public class LMarker extends LLayer
@@ -34,10 +35,7 @@ public class LMarker extends LLayer
 	private static final String MARKER_TYPE = "Point";
 	private LMarkerGeometry geometry;
 	private LMarkerOptions properties;
-	/**
-	 * Tag for custom meta-data
-	 */
-
+	private LMarkerExtras extras;
 
 	/**
 	 * Creates a new Marker at the latitude, longitude
@@ -50,27 +48,28 @@ public class LMarker extends LLayer
 		super();
 		this.geometry = new LMarkerGeometry(MARKER_TYPE, lat, lon);
 		this.properties = new LMarkerOptions();
+		this.extras = new LMarkerExtras();
 	}
 
 
 	public LIcon getIcon()
 	{
-		return this.properties.getIcon();
+		return this.extras.getIcon();
 	}
 
 	public void setDivIcon(final LDivIcon icon)
 	{
-		this.properties.setIcon(icon);
+		this.extras.setIcon(icon);
 	}
 
 	public LIcon getDivIcon()
 	{
-		return this.properties.getIcon();
+		return this.extras.getIcon();
 	}
 
 	public void setIcon(final LIcon icon)
 	{
-		this.properties.setIcon(icon);
+		this.extras.setIcon(icon);
 	}
 
 	public LMarkerGeometry getGeometry()
@@ -91,6 +90,15 @@ public class LMarker extends LLayer
 	public void setProperties(final LMarkerOptions properties)
 	{
 		this.properties = properties;
+	}
+
+	@NotNull
+	public LMarkerExtras getExtras() {
+		return extras;
+	}
+
+	public void setExtras(@NotNull LMarkerExtras extras) {
+		this.extras = extras;
 	}
 
 	public double getLat()
@@ -115,6 +123,10 @@ public class LMarker extends LLayer
 		this.geometry.getCoordinates().set(1, lon);
 	}
 
+	/**
+	 * @deprecated Use LPopup instead
+	 */
+	@Deprecated
 	public String getPopup()
 	{
 		return this.properties.getPopup();
@@ -122,9 +134,9 @@ public class LMarker extends LLayer
 
 	/**
 	 * Sets a Pop-up to the Marker
-	 *
-	 * @param popup
+	 * @deprecated Use LPopup instead
 	 */
+	@Deprecated
 	public void setPopup(final String popup)
 	{
 		this.properties.setPopup(popup);
@@ -134,17 +146,18 @@ public class LMarker extends LLayer
 	public JsonValue toJson()
 	{
 		final JsonObject jsonObject = Json.createObject();
+//			jsonObject.put("type", Json.create("Feature"));
 		final ObjectMapper mapper = new ObjectMapper();
 		try
 		{
-			jsonObject.put("type", Json.create("Feature"));
 			jsonObject.put("geometry", Json.parse(mapper.writeValueAsString(this.geometry)));
-			jsonObject.put("properties", Json.parse(mapper.writeValueAsString(this.properties)));
 		}
 		catch(final JsonProcessingException e)
 		{
 			throw new RuntimeException(e);
 		}
+		jsonObject.put("properties", this.properties.toJson());
+		jsonObject.put("extras", this.extras.toJson());
 
 		return jsonObject;
 	}

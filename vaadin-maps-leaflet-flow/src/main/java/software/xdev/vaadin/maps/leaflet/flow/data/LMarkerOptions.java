@@ -20,25 +20,20 @@ package software.xdev.vaadin.maps.leaflet.flow.data;
  * #L%
  */
 
-public class LMarkerOptions
+import org.jetbrains.annotations.Nullable;
+import software.xdev.vaadin.maps.leaflet.flow.data.options.HasInteractiveOptions;
+import software.xdev.vaadin.maps.leaflet.flow.data.options.HasMarkerOptions;
+import software.xdev.vaadin.maps.leaflet.flow.data.options.LeafletOptionsBase;
+import software.xdev.vaadin.maps.leaflet.flow.data.options.LeafletOptionsContainerKey;
+
+public class LMarkerOptions extends LeafletOptionsBase implements HasInteractiveOptions, HasMarkerOptions
 {
+	/**
+	 * @deprecated Use LPopup instead
+	 */
+	@Deprecated
 	private String popup;
-	private LIcon icon;
-	
-	public LMarkerOptions()
-	{
-		this.icon = new LIcon();
-	}
-	
-	public LIcon getIcon()
-	{
-		return this.icon;
-	}
-	
-	public void setIcon(final LIcon icon)
-	{
-		this.icon = icon;
-	}
+
 
 	/**
 	 * @deprecated Use LPopup instead

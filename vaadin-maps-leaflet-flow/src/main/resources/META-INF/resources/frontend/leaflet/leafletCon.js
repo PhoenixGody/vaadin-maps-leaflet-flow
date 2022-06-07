@@ -148,12 +148,12 @@ export class LeafletMap extends PolymerElement {
     }
 
     addMarker(itemId, obj) {
-      const leafletMapElement = this;
-        var leafIcon;
-        if (obj.properties.icon.type == 'DivIcon') {
-            leafIcon = new L.divIcon(obj.properties.icon);
+        const leafletMapElement = this;
+        let leafIcon;
+        if (obj.extras.icon.type == 'DivIcon') {
+            leafIcon = new L.divIcon(obj.extras.icon.properties);
         } else {
-            leafIcon = new L.icon(obj.properties.icon);
+            leafIcon = new L.icon(obj.extras.icon.properties);
         }    
         var item = L.marker(obj.geometry.coordinates, {icon: leafIcon});
         item.addTo(this.map);
@@ -175,8 +175,6 @@ export class LeafletMap extends PolymerElement {
             });
             leafletMapElement.dispatchEvent(customEvent);
         });
-
-
     }
 
     deleteItem(itemId) {
