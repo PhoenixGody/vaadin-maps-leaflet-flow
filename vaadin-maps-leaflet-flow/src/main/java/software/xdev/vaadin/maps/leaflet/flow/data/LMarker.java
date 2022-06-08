@@ -146,7 +146,6 @@ public class LMarker extends LLayer
 	public JsonValue toJson()
 	{
 		final JsonObject jsonObject = Json.createObject();
-//			jsonObject.put("type", Json.create("Feature"));
 		final ObjectMapper mapper = new ObjectMapper();
 		try
 		{
