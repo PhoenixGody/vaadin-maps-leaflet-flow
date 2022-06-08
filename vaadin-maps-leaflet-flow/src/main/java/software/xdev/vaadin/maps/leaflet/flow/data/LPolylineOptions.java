@@ -6,22 +6,22 @@ import software.xdev.vaadin.maps.leaflet.flow.data.options.LeafletOptionsBase;
 import software.xdev.vaadin.maps.leaflet.flow.data.options.LeafletOptionsContainerKey;
 
 public class LPolylineOptions extends LeafletOptionsBase implements HasPathOptions, HasInteractiveOptions {
-    LeafletOptionsContainerKey<Boolean> NO_CLIP = new LeafletOptionsContainerKey<>(Boolean.class, "noClip");
-    LeafletOptionsContainerKey<Double> SMOOTH_FACTOR = new LeafletOptionsContainerKey<>(Double.class, "smoothFactor");
+    public LeafletOptionsContainerKey<Boolean> NO_CLIP = new LeafletOptionsContainerKey<>(Boolean.class, "noClip");
+    public LeafletOptionsContainerKey<Double> SMOOTH_FACTOR = new LeafletOptionsContainerKey<>(Double.class, "smoothFactor");
 
-    void setNoClip(boolean value) {
+    public void setNoClip(boolean value) {
         getLeafletOptionsContainer().putTyped(NO_CLIP, value);
     }
 
-    Boolean getNoClip() {
+    public Boolean getNoClip() {
         return getLeafletOptionsContainer().getTyped(NO_CLIP);
     }
 
-    void setSmoothFactor(double value) {
+    public void setSmoothFactor(double value) {
         getLeafletOptionsContainer().putTyped(SMOOTH_FACTOR, value);
     }
 
-    Double getSmoothFactor() {
+    public Double getSmoothFactor() {
         return getLeafletOptionsContainer().getTyped(SMOOTH_FACTOR);
     }
 }
