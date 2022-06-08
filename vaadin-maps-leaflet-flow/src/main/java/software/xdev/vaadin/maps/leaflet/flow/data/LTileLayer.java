@@ -23,6 +23,7 @@ package software.xdev.vaadin.maps.leaflet.flow.data;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 import elemental.json.JsonValue;
+import org.jetbrains.annotations.NotNull;
 import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
 
 import java.util.UUID;
@@ -30,17 +31,22 @@ import java.util.UUID;
 
 public class LTileLayer extends LManagedComponent
 {
+	private LTileLayerOptions options;
+
 	private String link;
-	private String attribution;
-	private int zoom;
 	private String id;
 
-	public LTileLayer(final String link, final String attribution, final int zoom, final String id)
-	{
+	public LTileLayer() {
 		super();
+		options = new LTileLayerOptions();
+	}
+
+	public LTileLayer(final String link, final String attribution, final Integer maxZoom, final String id)
+	{
+		this();
+		setAttribution(attribution);
+		getOptions().setMaxZoom(maxZoom);
 		this.link = link;
-		this.attribution = attribution;
-		this.zoom = zoom;
 		this.id = id;
 	}
 	
@@ -56,22 +62,30 @@ public class LTileLayer extends LManagedComponent
 	
 	public String getAttribution()
 	{
-		return this.attribution;
+		return this.options.getAttribution();
 	}
 	
 	public void setAttribution(final String attribution)
 	{
-		this.attribution = attribution;
+		this.options.setAttribution(attribution);
 	}
-	
+
+	/**
+	 * @deprecated use {@link #getOptions()} and {@link LTileLayerOptions#getMaxZoom()} instead
+	 */
+	@Deprecated
 	public int getZoom()
 	{
-		return this.zoom;
+		return this.options.getMaxZoom() == null ? 18 : this.options.getMaxZoom();
 	}
-	
+
+	/**
+	 * @deprecated use {@link #getOptions()} and {@link LTileLayerOptions#setMaxZoom(Integer)} instead
+	 */
+	@Deprecated
 	public void setZoom(final int zoom)
 	{
-		this.zoom = zoom;
+		this.options.setMaxZoom(zoom);
 	}
 	
 	public String getId()
@@ -83,7 +97,17 @@ public class LTileLayer extends LManagedComponent
 	{
 		this.id = id;
 	}
-	
+
+
+	@NotNull
+	public LTileLayerOptions getOptions() {
+		return options;
+	}
+
+	public void setOptions(@NotNull LTileLayerOptions options) {
+		this.options = options;
+	}
+
 	@Override
 	public JsonValue toJson()
 	{
@@ -91,11 +115,13 @@ public class LTileLayer extends LManagedComponent
 
 		final JsonObject tileLayer = Json.createObject();
 		tileLayer.put("link", getLink());
-		tileLayer.put("attribution", getAttribution());
-		tileLayer.put("zoom", getZoom());
-		tileLayer.put("id", getId());
-
 		result.put("tile", tileLayer);
+
+		JsonObject optionsJson = (JsonObject) options.toJson();
+		if (getId() != null)
+			optionsJson.put("id", getId());//todo: check if necessary; id is not part of the leaflet TileLayer options
+		result.put("properties", optionsJson);
+
 		return result;
 	}
 

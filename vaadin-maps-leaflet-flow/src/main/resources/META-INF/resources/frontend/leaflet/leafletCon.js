@@ -254,7 +254,7 @@ export class LeafletMap extends PolymerElement {
     };
 
     addTileLayer(itemId, layer) {
-        let item = L.tileLayer(layer.tile.link,{attribution: layer.tile.attribution, maxZoom: layer.tile.zoom, id: layer.tile.id});
+        let item = L.tileLayer(layer.tile.link, layer.properties);
 
         item.on('add', this.onTileLayerAdded, this);
         item.on('remove', this.onTileLayerRemoved, this);
