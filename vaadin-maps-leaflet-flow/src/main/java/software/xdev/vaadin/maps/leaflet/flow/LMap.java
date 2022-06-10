@@ -65,6 +65,7 @@ public class LMap extends Component implements HasSize, HasStyle
 	private static final String STOP_LOCATE_FUNCTION = "stopLocate";
 
 	private static final String ZOOM_TO_CONTENT_FUNCTION = "zoomToContent";
+	private static final String RECALCULATE_AUTO_COLLIDING_TOOLTIP_VISIBILITY = "recalculateAutoCollidingTooltipVisibility";
 
 	private LCenter center;
 	private final Map<String, LManagedComponent> components = new TreeMap<>();
@@ -296,5 +297,13 @@ public class LMap extends Component implements HasSize, HasStyle
 
 	public void zoomToContent() {
 		this.getElement().callJsFunction(ZOOM_TO_CONTENT_FUNCTION);
+	}
+
+	/**
+	 * Performs the recalculation of the visibility of all permanent, autocolliding tooltips.
+	 * This can be triggered by the flow api for better performance after elements have been added.
+	 */
+	public void recalculateAutoCollidingTooltipVisibility() {
+		this.getElement().callJsFunction(RECALCULATE_AUTO_COLLIDING_TOOLTIP_VISIBILITY);
 	}
 }

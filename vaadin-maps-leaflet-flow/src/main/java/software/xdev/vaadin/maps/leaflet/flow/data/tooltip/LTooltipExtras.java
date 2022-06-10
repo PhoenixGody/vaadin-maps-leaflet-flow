@@ -11,13 +11,19 @@ import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
 public class LTooltipExtras implements CanConvertToJson {
 
     private boolean openOnAdd;
+    private boolean autoColliding;
 
     public LTooltipExtras() {
-        openOnAdd = false;
+        this(false, false);
     }
 
     public LTooltipExtras(boolean openOnAdd) {
+        this(openOnAdd, false);
+    }
+
+    public LTooltipExtras(boolean openOnAdd, boolean autoColliding) {
         this.openOnAdd = openOnAdd;
+        this.autoColliding = autoColliding;
     }
 
     public static LTooltipExtras create() {
@@ -28,6 +34,7 @@ public class LTooltipExtras implements CanConvertToJson {
     public JsonValue toJson() {
         final JsonObject result = Json.createObject();
         result.put("openOnAdd", getOpenOnAdd());
+        result.put("autoColliding", getAutoColliding());
         return result;
     }
 
@@ -44,6 +51,19 @@ public class LTooltipExtras implements CanConvertToJson {
     public boolean getOpenOnAdd() {
         return openOnAdd;
     }
+
+    public boolean getAutoColliding() {
+        return autoColliding;
+    }
+
+    /**
+     * When true the tooltip tries to detect if it is colliding with other tooltips and hide.
+     * This will only work if the tooltip option "permanent" is set to "true".
+     */
+    public void setAutoColliding( boolean autoColliding) {
+        this.autoColliding = autoColliding;
+    }
+
 
     // endregion
 }

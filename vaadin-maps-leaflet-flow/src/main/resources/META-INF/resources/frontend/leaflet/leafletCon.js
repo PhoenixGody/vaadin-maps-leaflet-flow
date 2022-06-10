@@ -108,6 +108,8 @@ export class LeafletMap extends PolymerElement {
                 }
             });
             leafletMapElement.dispatchEvent(customEvent);
+            // here would be to early, so best would be to trigger this from the flow side when ready:
+            //leafletMapElement.recalculateAutoCollidingTooltipVisibility();
         });
 
         this.map.on('locationfound', function (e) {
@@ -278,7 +280,21 @@ export class LeafletMap extends PolymerElement {
             throw new Error("Tooltip could not be added: the itemId of the target layer was not found. " +
                 "Maybe the Layer is not yet added?");
 
+        let isAutoColliding = params.tooltipExtras.autoColliding && params.tooltipOptions.permanent;
+        if (isAutoColliding)
+        {
+            if (params.tooltipOptions.className == undefined)
+                params.tooltipOptions.className = "autoColliding";
+            else
+            {
+                if (params.tooltipOptions.className.length > 0)
+                    params.tooltipOptions.className += " ";
+                params.tooltipOptions.className += "autoColliding";
+            }
+        }
+
         layer.bindTooltip(params.tooltipContent, params.tooltipOptions);
+
         if (params.tooltipExtras.openOnAdd)
             layer.openTooltip();
     }
@@ -363,6 +379,30 @@ export class LeafletMap extends PolymerElement {
             throw new Error("No coordinates were provided to extract.");
 
         return latlngs;
+    }
+
+    _doesOverlap(rect1, rect2) {
+        return(!(rect1.right < rect2.left ||
+            rect1.left > rect2.right ||
+            rect1.bottom < rect2.top ||
+            rect1.top > rect2.bottom));
+    }
+
+    recalculateAutoCollidingTooltipVisibility() {
+        var rects = [];
+        var tooltips = this.$.divMap.getElementsByClassName("autoColliding");
+        for (var i = 0; i < tooltips.length; i++) {
+            tooltips[i].style.visibility = '';
+            rects[i] = tooltips[i].getBoundingClientRect();
+        }
+        for (var i = 0; i < tooltips.length; i++) {
+            if (tooltips[i].style.visibility != 'hidden') {
+                for (var j = i + 1; j < tooltips.length; j++) {
+                    if (this._doesOverlap(rects[i], rects[j]))
+                        tooltips[j].style.visibility = 'hidden';
+                }
+            }
+        }
     }
 }
 
