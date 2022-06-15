@@ -74,7 +74,6 @@
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		
 		<plugins>
 			<!-- Jetty plugin for easy testing without a server -->
 			<plugin>
@@ -83,6 +82,25 @@
 				<version>9.4.45.v20220203</version>
 				<configuration>
 					<scanIntervalSeconds>1</scanIntervalSeconds>
+				</configuration>
+			</plugin>
+			<!-- SASS Compiler Plugin -->
+			<plugin>
+				<groupId>com.gitlab.haynes</groupId>
+				<artifactId>libsass-maven-plugin</artifactId>
+				<version>0.2.26</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<inputPath>${basedir}/src/main/resources/META-INF/resources/frontend/styles</inputPath>
+					<outputPath>${basedir}/target/classes/META-INF/resources/frontend/styles</outputPath>
+					<generateSourceMap>false</generateSourceMap>
 				</configuration>
 			</plugin>
 			<plugin>

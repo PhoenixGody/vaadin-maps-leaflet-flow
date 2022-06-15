@@ -1,0 +1,16 @@
+.leaflet-popup.crazy {
+    &, .leaflet-popup-content {
+        color: #ff1493;
+    }
+}
+
+:host .leaflet-tooltip {
+    background-color: rgba(55, 55, 55, 80);
+    color: #fff;
+    border: none;
+    box-shadow: none;
+}
+
+:host .leaflet-tooltip.crazy {
+    color: greenyellow;
+}

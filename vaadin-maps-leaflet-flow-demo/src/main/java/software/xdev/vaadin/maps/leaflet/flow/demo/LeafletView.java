@@ -10,6 +10,8 @@ import java.util.UUID;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -33,7 +35,6 @@ import software.xdev.vaadin.maps.leaflet.flow.data.popup.LPopupExtras;
 import software.xdev.vaadin.maps.leaflet.flow.data.popup.LPopupOptions;
 import software.xdev.vaadin.maps.leaflet.flow.data.tooltip.LTooltip;
 import software.xdev.vaadin.maps.leaflet.flow.data.tooltip.LTooltipOptions;
-
 
 @Route("")
 public class LeafletView extends VerticalLayout
@@ -65,7 +66,7 @@ public class LeafletView extends VerticalLayout
 	private final Button btnOpenXdevPopup = new Button("Open XDEV Popup", this::openXdevPopup);
 
 
-	private LMap map;
+	private StyledMap map;
 	
 	private LMarker markerZob;
 	private LMarker markerRathaus;
@@ -155,7 +156,7 @@ public class LeafletView extends VerticalLayout
 		polygonNoc.setFillColor("#3366ff");
 		polygonNoc.setFillOpacity(0.8);
 		polygonNoc.setStroke(false);
-		polygonNoc.bindTooltip(new LTooltip("Tip: This is the NOC-Nordoberpfalz Center", LTooltipOptions.create()));
+		polygonNoc.bindTooltip(new LTooltip("Tip: This is the NOC-Nordoberpfalz Center", LTooltipOptions.create().setClassName("crazy")));
 
 		this.markerRathaus = new LMarker(49.675519, 12.163868);
 		this.markerRathaus.setPopup("Old Town Hall");
@@ -187,7 +188,7 @@ public class LeafletView extends VerticalLayout
 		osmLayerDE = new LTileLayer("https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png",
 				"© <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>", 18,
 				UUID.randomUUID().toString());
-		this.map = new LMap(49.675126, 12.160733, 17, this.osmLayer);
+		this.map = new StyledMap(49.675126, 12.160733, 17, this.osmLayer);
 
 		this.map.addOnLocateSuccessListener((event) -> {
 			Notification.show("Located successfully!");
@@ -251,7 +252,7 @@ public class LeafletView extends VerticalLayout
 			geoJsonMultiPolyline
 			);
 
-		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", new LTooltipOptions(null, null, true, null, null)));
+		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", new LTooltipOptions(null, null, true, null, null, null)));
 		LPopupOptions rathausPopupOptions = new LPopupOptions();
 		rathausPopupOptions.setCloseButton(false);
 		LPopupExtras popupExtras = LPopupExtras.create()
@@ -272,7 +273,7 @@ public class LeafletView extends VerticalLayout
 		geoJsonPolygonWithHoles.setFill(true);
 		// set fillRule because: we do not want to fill the holes in the polygon; see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-rule
 		geoJsonPolygonWithHoles.setFillRule("evenodd");
-		geoJsonPolygonWithHoles.bindPopup(new LPopup("This is a Polygon with holes", LPopupOptions.create().setAutoClose(false)));
+		geoJsonPolygonWithHoles.bindPopup(new LPopup("This is a Polygon with holes", LPopupOptions.create().setAutoClose(false).setClassName("crazy")));
 		geoJsonPolygonWithHoles.togglePopup();
 		return geoJsonPolygonWithHoles;
 	}
@@ -316,7 +317,8 @@ public class LeafletView extends VerticalLayout
 				.setAutoPan(true)
 				.setKeepInView(true)
 				.setCloseOnClick(false)
-				.setCloseButton(false);
+				.setCloseButton(false)
+				.setClassName("crazy");
 		LPopupExtras popupExtras = LPopupExtras.create()
 				.setOpenOnAdd(true);
 		LPopup popup = new LPopup("This is a Polygon without holes", popupOptions, popupExtras);

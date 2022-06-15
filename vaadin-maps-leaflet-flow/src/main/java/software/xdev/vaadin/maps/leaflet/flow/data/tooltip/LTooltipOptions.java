@@ -19,16 +19,20 @@ public class LTooltipOptions implements CanConvertToJson {
     private Boolean sticky;
     private Double opacity;
 
+    private String className;
+
     public LTooltipOptions(@Nullable LPoint offset,
                            @Nullable String direction,
                            @Nullable Boolean permanent,
                            @Nullable Boolean sticky,
-                           @Nullable Double opacity) {
+                           @Nullable Double opacity,
+                           @Nullable String className) {
         setOffset(offset);
         setDirection(direction);
         setPermanent(permanent);
         setSticky(sticky);
         setOpacity(opacity);
+        setClassName(className);
     }
 
     public LTooltipOptions() {
@@ -57,6 +61,8 @@ public class LTooltipOptions implements CanConvertToJson {
             result.put("sticky", getSticky());
         if (getOpacity() != null)
             result.put("opacity", getOpacity());
+        if (getClassName() != null)
+            result.put("className", getClassName());
         return result;
     }
 
@@ -84,6 +90,12 @@ public class LTooltipOptions implements CanConvertToJson {
     public Double getOpacity() {
         return opacity;
     }
+
+    @Nullable
+    public String getClassName() {
+        return className;
+    }
+
     // endregion getters
 
     // region setters
@@ -109,6 +121,11 @@ public class LTooltipOptions implements CanConvertToJson {
 
     public LTooltipOptions setOpacity(@Nullable Double opacity) {
         this.opacity = opacity;
+        return this;
+    }
+
+    public LTooltipOptions setClassName(@Nullable String className) {
+        this.className = className;
         return this;
     }
     //endregion setters

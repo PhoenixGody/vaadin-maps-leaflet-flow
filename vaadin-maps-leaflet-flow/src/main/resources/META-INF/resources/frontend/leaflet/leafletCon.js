@@ -1,21 +1,18 @@
 import {html,PolymerElement} from "@polymer/polymer/polymer-element.js";
-//import "leaflet/dist/leaflet.js"; // for distribution
+import { ThemableMixin } from '@vaadin/vaadin-themable-mixin';
+import {ElementMixin} from "@vaadin/component-base";
 import * as L from "leaflet/src/Leaflet.js";
-import {Handler} from "leaflet/dist/leaflet-src.esm"; // for debugging
+//import "leaflet/dist/leaflet.js"; // for distribution
+//import {Handler} from "leaflet/dist/leaflet-src.esm"; // for debugging
 
-export class LeafletMap extends PolymerElement {
+export class LeafletMap extends ElementMixin(ThemableMixin(PolymerElement)) {
+    static get is() {
+        return "leaflet-map";
+    }
+
     static get template() {
         return html `
-      <link
-        rel="stylesheet"
-        href=[[leafletCssSrc]]
-      />
-
       <style>
-        #map-container {
-          width: 100%;
-          height: 100%;
-        }
         #divMap {
           width: 100%;
           height: 100%;
@@ -26,6 +23,10 @@ export class LeafletMap extends PolymerElement {
         	white-space: nowrap;
         }
       </style>
+      <link
+              rel="stylesheet"
+              href=[[leafletCssSrc]]
+      />
       <div id="divMap"></div>
     `;
     }
@@ -406,4 +407,4 @@ export class LeafletMap extends PolymerElement {
     }
 }
 
-customElements.define("leaflet-map", LeafletMap);
+customElements.define(LeafletMap.is, LeafletMap);
