@@ -46,6 +46,7 @@ public class LIcon implements CanConvertToJson
 	private List<Integer> iconSize;
 	private final List<Integer> iconAnchor = new ArrayList<>();
 	private final List<Integer> popupAnchor = new ArrayList<>();
+	private final List<Integer> tooltipAnchor = new ArrayList<>();
 	private String shadowUrl;
 	private final List<Integer> shadowSize = new ArrayList<>();
 	private final List<Integer> shadowAnchor = new ArrayList<>();
@@ -151,12 +152,29 @@ public class LIcon implements CanConvertToJson
 	 */
 	public void setPopupAnchor(final int x, final int y)
 	{
-		
 		this.popupAnchor.clear();
 		this.popupAnchor.add(x);
 		this.popupAnchor.add(y);
 	}
-	
+
+	public List<Integer> getTooltipAnchor()
+	{
+		return this.tooltipAnchor;
+	}
+
+	/**
+	 * Anchor point of the Pop-up message in x,y px.
+	 *
+	 * @param x
+	 * @param y
+	 */
+	public void setTooltipAnchor(final int x, final int y)
+	{
+		this.tooltipAnchor.clear();
+		this.tooltipAnchor.add(x);
+		this.tooltipAnchor.add(y);
+	}
+
 	public String getShadowUrl()
 	{
 		return this.shadowUrl;
