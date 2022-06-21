@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.BeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.vaadin.flow.internal.JsonUtils;
 import elemental.json.Json;
 import elemental.json.JsonObject;
@@ -44,25 +47,25 @@ public class LPopupOptions implements CanConvertToJson {
     @Override
     @NotNull
     public JsonValue toJson() {
-        JsonObject result = Json.createObject();
-
-        if(getOffset() != null) {
-            JsonValue offsetPoint = getOffset().toJson();
-            if (offsetPoint != null)
-                result.put("offset", offsetPoint);
-        }
+        JsonObject result;
 
         String res = "";
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         try {
-
             res = objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         result = JsonUtil.parse(res);//todo serializing and then deserializing could be avoided
 
+        // it is important to put the offset after already parsing the serialized object because otherwise the object
+        // would be converted in a wrong format
+        if(getOffset() != null) {
+            JsonValue offsetPoint = getOffset().toJson();
+            if (offsetPoint != null)
+                result.put("offset", offsetPoint);
+        }
 
         return result;
     }
