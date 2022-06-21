@@ -1,25 +1,23 @@
 package software.xdev.vaadin.maps.leaflet.flow.data.tooltip;
 
-import elemental.json.Json;
-import elemental.json.JsonObject;
-import elemental.json.JsonValue;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.data.LPoint;
-import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
+import software.xdev.vaadin.maps.leaflet.flow.data.options.HasClassNameOptions;
+import software.xdev.vaadin.maps.leaflet.flow.data.options.HasInteractiveOptions;
+import software.xdev.vaadin.maps.leaflet.flow.data.options.LeafletOptionsBase;
+import software.xdev.vaadin.maps.leaflet.flow.data.options.LeafletOptionsContainerKey;
 
 
 /**
  * official Leaflet JS Options for Tooltips
  */
-public class LTooltipOptions implements CanConvertToJson {
-    private LPoint offset;
-    private String direction;
-    private Boolean permanent;
-    private Boolean sticky;
-    private Double opacity;
+public class LTooltipOptions extends LeafletOptionsBase implements HasInteractiveOptions, HasClassNameOptions<LTooltipOptions> {
 
-    private String className;
+    LeafletOptionsContainerKey<LPoint> OFFSET = new LeafletOptionsContainerKey<>(LPoint.class, "offset");
+    LeafletOptionsContainerKey<String> DIRECTION = new LeafletOptionsContainerKey<>(String.class, "direction");
+    LeafletOptionsContainerKey<Boolean> PERMANENT = new LeafletOptionsContainerKey<>(Boolean.class, "permanent");
+    LeafletOptionsContainerKey<Boolean> STICKY = new LeafletOptionsContainerKey<>(Boolean.class, "sticky");
+    LeafletOptionsContainerKey<Double> OPACITY = new LeafletOptionsContainerKey<>(Double.class, "opacity");
 
     public LTooltipOptions(@Nullable LPoint offset,
                            @Nullable String direction,
@@ -42,90 +40,55 @@ public class LTooltipOptions implements CanConvertToJson {
         return new LTooltipOptions();
     }
 
-    @Override
-    @NotNull
-    public JsonValue toJson() {
-        JsonObject result = Json.createObject();
-        if(getOffset() != null)
-        {
-            JsonValue offsetPoint = getOffset().toJson();
-            if (offsetPoint != null)
-                result.put("offset", offsetPoint);
-        }
-
-        if (getDirection() != null)
-            result.put("direction", getDirection());
-        if (getPermanent() != null)
-            result.put("permanent", getPermanent());
-        if (getSticky() != null)
-            result.put("sticky", getSticky());
-        if (getOpacity() != null)
-            result.put("opacity", getOpacity());
-        if (getClassName() != null)
-            result.put("className", getClassName());
-        return result;
-    }
-
     // region getters
     @Nullable
     public LPoint getOffset() {
-        return offset;
+        return getLeafletOptionsContainer().getTyped(OFFSET);
     }
 
     @Nullable
     public String getDirection() {
-        return direction;
+        return getLeafletOptionsContainer().getTyped(DIRECTION);
     }
 
     @Nullable
     public Boolean getPermanent() {
-        return permanent;
+        return getLeafletOptionsContainer().getTyped(PERMANENT);
     }
 
     @Nullable
     public Boolean getSticky() {
-        return sticky;
+        return getLeafletOptionsContainer().getTyped(STICKY);
     }
     @Nullable
     public Double getOpacity() {
-        return opacity;
+        return getLeafletOptionsContainer().getTyped(OPACITY);
     }
-
-    @Nullable
-    public String getClassName() {
-        return className;
-    }
-
     // endregion getters
 
     // region setters
     public LTooltipOptions setOffset(@Nullable LPoint offset) {
-        this.offset = offset;
+        getLeafletOptionsContainer().putTyped(OFFSET, offset);
         return this;
     }
 
     public LTooltipOptions setDirection(@Nullable String direction) {
-        this.direction = direction;
+        getLeafletOptionsContainer().putTyped(DIRECTION, direction);
         return this;
     }
 
     public LTooltipOptions setPermanent(@Nullable Boolean permanent) {
-        this.permanent = permanent;
+        getLeafletOptionsContainer().putTyped(PERMANENT, permanent);
         return this;
     }
 
     public LTooltipOptions setSticky(@Nullable Boolean sticky) {
-        this.sticky = sticky;
+        getLeafletOptionsContainer().putTyped(STICKY, sticky);
         return this;
     }
 
     public LTooltipOptions setOpacity(@Nullable Double opacity) {
-        this.opacity = opacity;
-        return this;
-    }
-
-    public LTooltipOptions setClassName(@Nullable String className) {
-        this.className = className;
+        getLeafletOptionsContainer().putTyped(OPACITY, opacity);
         return this;
     }
     //endregion setters

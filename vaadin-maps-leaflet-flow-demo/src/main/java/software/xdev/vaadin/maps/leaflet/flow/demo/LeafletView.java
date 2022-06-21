@@ -10,8 +10,6 @@ import java.util.UUID;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -24,7 +22,6 @@ import elemental.json.JsonValue;
 import elemental.json.impl.JsonUtil;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
-import software.xdev.vaadin.maps.leaflet.flow.LMap;
 import software.xdev.vaadin.maps.leaflet.flow.data.*;
 import software.xdev.vaadin.maps.leaflet.flow.LManagedComponent;
 import software.xdev.vaadin.maps.leaflet.flow.data.control.LControlLayers;
