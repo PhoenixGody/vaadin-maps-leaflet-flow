@@ -154,7 +154,8 @@ public class LeafletView extends VerticalLayout
 		this.markerRathaus = new LMarker(49.675519, 12.163868);
 		this.markerRathaus.setPopup("Old Town Hall");
 
-		this.markerRathaus.setDivIcon(new LSvgIcon("01"));
+		this.markerRathaus.setIcon(new LIcon());
+//		this.markerRathaus.setDivIcon(new LSvgIcon("01"));
 
 		this.circleRange = new LCircle(49.675126, 12.160733, 450);
 		
@@ -245,8 +246,7 @@ public class LeafletView extends VerticalLayout
 			geoJsonMultiPolyline
 			);
 
-		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", LTooltipOptions.create().setOffset(new LPoint(0,0)).setPermanent(true)));
-
+		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", new LTooltipOptions(null, null, true, null, null, null)));
 		LPopupOptions rathausPopupOptions = new LPopupOptions();
 		rathausPopupOptions.setCloseButton(false);
 		LPopupExtras popupExtras = LPopupExtras.create()
@@ -308,7 +308,7 @@ public class LeafletView extends VerticalLayout
 		polygon.setFillOpacity(0.8);
 		polygon.setFill(true);
 		LPopupOptions popupOptions = LPopupOptions.create()
-				.setAutoPan(true)
+				.setAutoPan(false)
 				.setKeepInView(true)
 				.setCloseOnClick(false)
 				.setCloseButton(false)

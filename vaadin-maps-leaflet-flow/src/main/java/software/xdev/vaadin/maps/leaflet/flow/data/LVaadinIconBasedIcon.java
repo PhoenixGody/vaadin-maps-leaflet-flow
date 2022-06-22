@@ -11,9 +11,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class LVaadinIconBasedIcon extends LSvgIcon {
 
-    private String vaadinIconHtml;
-
-
     public LVaadinIconBasedIcon(@NotNull Icon icon) {
         this(icon, null, null, null);
     }
@@ -28,31 +25,21 @@ public class LVaadinIconBasedIcon extends LSvgIcon {
     }
 
     public LVaadinIconBasedIcon(@NotNull Icon icon, @Nullable String iconPathFill, @Nullable String iconPathStroke, @Nullable String vaadinIconFill) {
-        super(null, iconPathFill, iconPathStroke, null);
+
+        super(null, iconPathFill, iconPathStroke, null, icon.getElement().getOuterHTML());
+
         if (vaadinIconFill != null)
             icon.setColor(vaadinIconFill);
-        vaadinIconHtml = icon.getElement().getOuterHTML();
 
-        String htmlContent = this.getHtml();
-        this.setHtml(htmlContent + vaadinIconHtml);
     }
 
-    @Override
-    protected String generateHtml() {
-        String result = super.generateHtml();
-        if (vaadinIconHtml != null)
-            result += vaadinIconHtml;
-        return result;
-    }
 
     private static Icon createIconFromFactory(@NotNull IconFactory iconFactory, @Nullable String vaadinIconFill) {
         Icon icon = iconFactory.create();
-        icon.getElement().getStyle().set("position", "relative");
-        icon.getElement().getStyle().set("z-index", "210");
-        icon.getElement().getStyle().set("margin-left", "16%");
-        icon.getElement().getStyle().set("margin-right", "16%");
-        icon.getElement().getStyle().set("margin-top", "4px");
-        icon.getElement().getStyle().set("width", "68%");
+        icon.getElement().getStyle().set("margin-top", "5px");
+        icon.getElement().getStyle().set("margin-left", "auto");
+        icon.getElement().getStyle().set("margin-right", "auto");
+        icon.getElement().getStyle().set("display", "block");
         if (vaadinIconFill != null)
             icon.setColor(vaadinIconFill);
         return icon;

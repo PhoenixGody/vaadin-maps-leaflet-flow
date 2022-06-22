@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class LSvgIcon extends LDivIcon {
 
+    private String innerHtml;
     private String iconPathFill;
     private String iconPathStroke;
     private String iconTextFill;
@@ -25,18 +26,27 @@ public class LSvgIcon extends LDivIcon {
      * creates a svg marker icon with custom text and default colors
      */
     public LSvgIcon(@Nullable String text) {
-        this(text, null, null, null);
+        this(text, null, null, null, null);
+    }
+
+
+    /**
+     * creates a colored SvgIcon without any inner html content
+     */
+    public LSvgIcon(@Nullable String text, @Nullable String iconPathFill, @Nullable String iconPathStroke, @Nullable String iconTextFill) {
+        this(text, iconPathFill, iconPathStroke, iconTextFill, null);
     }
 
     /**
      * creates the most customized version of a svg marker icon
      */
-    public LSvgIcon(@Nullable String text, @Nullable String iconPathFill, @Nullable String iconPathStroke, @Nullable String iconTextFill) {
+    public LSvgIcon(@Nullable String text, @Nullable String iconPathFill, @Nullable String iconPathStroke, @Nullable String iconTextFill,  @Nullable String innerHtml) {
         super();
         this.iconPathFill = iconPathFill;
         this.iconPathStroke = iconPathStroke;
         this.iconTextFill = iconTextFill;
         this.text = text;
+        this.innerHtml = innerHtml;
 
         updateHtml();
 
@@ -71,15 +81,24 @@ public class LSvgIcon extends LDivIcon {
         svgSb.append(pathStrokeColor);
         svgSb.append("\" d=\"M12.544,0.5C5.971,0.5,0.5,6.24,0.5,12.416c0,2.777,1.564,6.308,2.694,8.745\n"
                 + "L12,38.922l9.262-17.761c1.13-2.438,2.738-5.791,2.738-8.745C24.5,6.24,19.117,0.5,12.544,0.5L12.544,0.5z\"/>");
-        svgSb.append("<text fill=\"");
-        svgSb.append(textFillColor);
-        svgSb.append("\" x=\"12\" y=\"20\" text-anchor=\"middle\" font-size=\"16\" class=\"");
-        svgSb.append("\">");
+
         if (this.text != null)
         {
+            svgSb.append("<text fill=\"");
+            svgSb.append(textFillColor);
+            svgSb.append("\" x=\"12\" y=\"20\" text-anchor=\"middle\" font-size=\"16\" class=\"");
+            svgSb.append("\">");
             svgSb.append(this.text);
+            svgSb.append("</text>");
         }
-        svgSb.append("</text></svg>");
+
+        if (this.innerHtml != null)
+        {
+            svgSb.append("<foreignObject x=\"0\" y=\"0\" width=\"100%\" height=\"100%\">");
+            svgSb.append(this.innerHtml);
+            svgSb.append("</foreignObject>");
+        }
+        svgSb.append("</svg>");
 
         return  svgSb.toString();
     }
