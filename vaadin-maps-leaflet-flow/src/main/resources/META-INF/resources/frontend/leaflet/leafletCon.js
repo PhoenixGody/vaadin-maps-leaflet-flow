@@ -157,8 +157,10 @@ export class LeafletMap extends ElementMixin(ThemableMixin(PolymerElement)) {
             leafIcon = new L.divIcon(obj.extras.icon.properties);
         } else {
             leafIcon = new L.icon(obj.extras.icon.properties);
-        }    
-        var item = L.marker(obj.geometry.coordinates, {icon: leafIcon});
+        }
+        let options = obj.properties || {};
+        options.icon = leafIcon;
+        var item = L.marker(obj.geometry.coordinates, options);
         item.addTo(this.map);
         this.zoomToContentFeautreGroup.addLayer(item);
 
