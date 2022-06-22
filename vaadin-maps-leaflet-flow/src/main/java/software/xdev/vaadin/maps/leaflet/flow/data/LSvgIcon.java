@@ -59,6 +59,7 @@ public class LSvgIcon extends LDivIcon {
      * Generates the html content and places it as DivContent
      */
     protected void updateHtml() {
+        // todo: it is not very efficient to always update the html part - this should be changed
         this.setHtml(generateHtml());
     }
 
@@ -138,6 +139,17 @@ public class LSvgIcon extends LDivIcon {
     public void setIconTextFill(@Nullable String iconTextFill) {
         if (this.iconTextFill != iconTextFill) {
             this.iconTextFill = iconTextFill;
+            updateHtml();
+        }
+    }
+
+    /**
+     * Sets the icons inner html part and updates the SvgIcon content.
+     * This will only work until the Marker with the icon is added to the map.
+     */
+    public void setInnerHtml(@Nullable String innerHtml) {
+        if (this.innerHtml != innerHtml) {
+            this.innerHtml = innerHtml;
             updateHtml();
         }
     }
