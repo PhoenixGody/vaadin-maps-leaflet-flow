@@ -117,6 +117,7 @@ public class LeafletView extends VerticalLayout
 		this.markerZob = new LMarker(49.673470, 12.160108);
 		this.markerZob.setPopup("Central bus station");
 		this.markerZob.setDivIcon(new LVaadinIconBasedIcon(VaadinIcon.BUS, "#E89C00", "#55266235", "#266235"));
+		this.markerZob.bindTooltip(new LTooltip("Bus", LTooltipOptions.create().setPermanent(false)));
 
 		this.markerXDev = new LMarker(49.675806677512824, 12.160990185846394);
 		final LIcon xDevLogo = new LIcon(
@@ -131,16 +132,11 @@ public class LeafletView extends VerticalLayout
 		this.markerXDev.setIcon(xDevLogo);
 
 		final LMarker markerInfo = new LMarker(49.674095, 12.162257);
-		final LDivIcon div = new LDivIcon(
-			"<p><center><b>Welcome to Weiden in der Oberpfalz!</b></center></p><p>This Demo shows you different Markers,<br> Popups, Polygon and other Stuff</p>");
-		div.setIconSize(280, 100);
-		
-		// other options:
-		// div.setIconSize(265, 90);
-		// div.setHtml(
-		// "<p><center><b>Welcome to Weiden in der Oberpfalz!</b></center></p><p>This Demo shows you different Markers,
-		// Popups, Polygon and other Stuff</p>");
-		//markerInfo.setDivIcon(div);
+		markerInfo.bindTooltip(new LTooltip("Welcome to Weiden in der Oberpfalz!", LTooltipOptions.create()));
+//		final LDivIcon div = new LDivIcon(
+//			"<p><center><b>Welcome to Weiden in der Oberpfalz!</b></center></p><p>This Demo shows you different Markers,<br> Popups, Polygon and other Stuff</p>");
+//		div.setIconSize(280, 100);
+//		markerInfo.setDivIcon(div);
 		
 		final LPolygonBase polygonNoc = new LPolygon(
 			Arrays.asList(
@@ -249,7 +245,8 @@ public class LeafletView extends VerticalLayout
 			geoJsonMultiPolyline
 			);
 
-		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", new LTooltipOptions(null, null, true, null, null, null)));
+		this.markerRathaus.bindTooltip(new LTooltip("Old Townhall", LTooltipOptions.create().setOffset(new LPoint(0,0)).setPermanent(true)));
+
 		LPopupOptions rathausPopupOptions = new LPopupOptions();
 		rathausPopupOptions.setCloseButton(false);
 		LPopupExtras popupExtras = LPopupExtras.create()
