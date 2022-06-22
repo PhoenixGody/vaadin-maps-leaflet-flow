@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 import elemental.json.JsonValue;
+import org.jetbrains.annotations.Nullable;
 import software.xdev.vaadin.maps.leaflet.flow.LMap;
 import software.xdev.vaadin.maps.leaflet.flow.data.base.CanConvertToJson;
 
@@ -46,7 +47,7 @@ public class LIcon implements CanConvertToJson
 	private List<Integer> iconSize;
 	private final List<Integer> iconAnchor = new ArrayList<>();
 	private final List<Integer> popupAnchor = new ArrayList<>();
-	private final List<Integer> tooltipAnchor = new ArrayList<>();
+	private List<Integer> tooltipAnchor;
 	private String shadowUrl;
 	private final List<Integer> shadowSize = new ArrayList<>();
 	private final List<Integer> shadowAnchor = new ArrayList<>();
@@ -157,6 +158,7 @@ public class LIcon implements CanConvertToJson
 		this.popupAnchor.add(y);
 	}
 
+	@Nullable
 	public List<Integer> getTooltipAnchor()
 	{
 		return this.tooltipAnchor;
@@ -170,7 +172,10 @@ public class LIcon implements CanConvertToJson
 	 */
 	public void setTooltipAnchor(final int x, final int y)
 	{
-		this.tooltipAnchor.clear();
+		if (this.tooltipAnchor == null)
+			this.tooltipAnchor = new ArrayList<>(2);
+		else
+			this.tooltipAnchor.clear();
 		this.tooltipAnchor.add(x);
 		this.tooltipAnchor.add(y);
 	}
@@ -213,6 +218,7 @@ public class LIcon implements CanConvertToJson
 	public JsonValue toJson() {
 		final JsonObject jsonObject = Json.createObject();
 		final ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		try
 		{
 			//using jackson json just like bevor moving the code because at this stage it is simple
